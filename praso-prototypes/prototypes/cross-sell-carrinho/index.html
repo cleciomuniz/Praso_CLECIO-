@@ -164,7 +164,7 @@
               <div class="x-m__cat">${next.cat}</div>
               <div class="x-prod__name">${Praso.esc(p.name)}</div>
               ${ui.priceBlock(p)}
-              <button class="ps-add ps-add--md x-m__add" data-action="add" data-id="${p.id}" aria-label="Adicionar">${icon('plus', { size: 22, sw: 1.8 })}</button>
+              <button class="ps-add ps-add--md x-m__add" data-action="x-m-add" data-id="${p.id}" aria-label="Adicionar">${icon('plus', { size: 22, sw: 1.8 })}</button>
             </div></div></article>`;
       } else {
         card = `<div class="x-m__ok"><i>${check(18, 2.6)}</i><div><strong style="font-size:13px;font-weight:600">Cesta completa!</strong><div class="x-muted" style="font-size:12px">Seu pedido tem as ${M_TOTAL} categorias.</div></div></div>`;
@@ -213,6 +213,25 @@
     const armsBar = () => `<nav class="x-arms" aria-label="Braço do teste">${ARMS.map((a) =>
       `<a class="${a === braco ? 'is-on' : ''}" href="?braco=${a}${a === 'n' ? '#/inicio' : '#/carrinho'}">${a === 'controle' ? 'Controle' : a.toUpperCase()}</a>`).join('')}</nav>`;
 
+    /* ---------- mantém o bloco de cross-sell parado na tela ----------
+       Ao adicionar/pular, o carrinho cresce para cima (rolagem compensada)
+       em vez de empurrar o bloco para baixo. */
+    let spacerH = 0;
+    function keepPos(fn) {
+      const sc = document.querySelector('#app .ps-scroll');
+      const blk = sc && sc.querySelector('[data-xs-block]');
+      const before = blk ? blk.getBoundingClientRect().top : null;
+      fn();
+      const b2 = sc && sc.querySelector('[data-xs-block]');
+      if (before === null || !b2) return;
+      const d = b2.getBoundingClientRect().top - before;
+      if (Math.abs(d) < 1) return;
+      const want = Math.max(0, sc.scrollTop + d);
+      const max = sc.scrollHeight - sc.clientHeight;
+      if (want > max) { spacerH += want - max; sc.querySelector('.x-spacer').style.height = spacerH + 'px'; }
+      sc.scrollTop = want;
+    }
+
     /* ---------- telas ---------- */
     const carrinho = () => {
       const lines = Praso.cart.lines();
@@ -222,7 +241,7 @@
       return {
         tab: 'carrinho',
         header: ui.navHeader({ title: 'Carrinho', action: trash }),
-        body: `<div class="ps-cartlist">${lines.map(ui.cartLine).join('')}</div>${block}<div class="ps-bottom-space--sm"></div>`,
+        body: `<div class="ps-cartlist">${lines.map(ui.cartLine).join('')}</div><div data-xs-block>${block}</div><div class="x-spacer" style="height:${spacerH}px"></div><div class="ps-bottom-space--sm"></div>`,
         footer: ui.checkoutBar({ total: Praso.cart.total(), count: lines.length }),
       };
     };
@@ -249,8 +268,9 @@
       cart: { 'leite-natville': 3, 'redbull-summer': 1 },
       screens,
       actions: {
-        'x-k-skip': () => { kIdx++; app.render(); },
-        'x-k-add': () => { const id = K_ITEMS[kIdx].id; kIdx++; kAdded++; Praso.cart.add(id); },
+        'x-k-skip': () => keepPos(() => { kIdx++; app.render(); }),
+        'x-k-add': () => keepPos(() => { const id = K_ITEMS[kIdx].id; kIdx++; kAdded++; Praso.cart.add(id); }),
+        'x-m-add': (b) => keepPos(() => Praso.cart.add(b.dataset.id)),
         'x-k-restart': () => { kIdx = 0; kAdded = 0; app.render(); },
         'x-n-close': () => { nState.open = false; nState.seen = true; app.render(); },
         'x-n-close-go': () => { nState.open = false; nState.seen = true; location.hash = '#/carrinho'; },
