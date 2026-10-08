@@ -1,0 +1,275 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Cross-sell no carrinho (GEN-105) — Praso</title>
+  <link rel="stylesheet" href="../../ds/tokens.css">
+  <link rel="stylesheet" href="../../ds/components.css">
+  <style>
+    /* GEN-105 · braços K, M e N (+ controle). Prefixo .x- */
+    .x-sec { padding: 14px var(--page-x) 12px; }
+    .x-title { margin: 0; font-size: 15px; font-weight: 600; color: var(--praso-blue); letter-spacing: -.1px; }
+    .x-muted { font-size: 11px; color: var(--gray-500); }
+    .x-badge-new { align-self: flex-start; padding: 2px 7px; border-radius: 5px; background: #facc15; color: #030712; font-size: 10.5px; font-weight: 600; }
+    .x-reason { font-size: 11px; font-weight: 600; color: var(--praso-blue); }
+    .x-prod { display: grid; grid-template-columns: 128px minmax(0, 1fr); gap: 12px; align-items: center; }
+    .x-prod img { width: 128px; height: 84px; object-fit: contain; }
+    .x-prod__info { display: flex; flex-direction: column; gap: 4px; align-items: flex-start; }
+    .x-prod__name { font-size: 12.5px; line-height: 1.3; color: var(--text); }
+
+    /* K · cartões um a um */
+    .x-k-stack { position: relative; margin-top: 8px; padding-bottom: 14px; }
+    .x-k-back { position: absolute; height: 24px; border-radius: 12px; }
+    .x-k-back--2 { left: 18px; right: 18px; bottom: 0; background: #dbe5fb; }
+    .x-k-back--1 { left: 9px; right: 9px; bottom: 7px; background: #b9cbf5; }
+    .x-k-card { position: relative; border: 1.5px solid var(--praso-blue); border-radius: 14px; background: #fff; padding: 10px 12px 12px; display: flex; flex-direction: column; gap: 8px; animation: x-in .3s ease both; }
+    @keyframes x-in { from { opacity: 0; transform: translateX(24px); } to { opacity: 1; transform: none; } }
+    .x-k-actions { display: grid; grid-template-columns: 1fr 2fr; gap: 8px; }
+    .x-btn-ghost { height: 44px; border: 1px solid var(--gray-200); border-radius: 10px; background: #fff; color: #374151; font-size: 14px; font-weight: 500; }
+    .x-btn-blue { height: 44px; border: 0; border-radius: 10px; background: var(--praso-blue); color: #fff; font-size: 14px; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 8px; }
+    .x-done { margin-top: 10px; padding: 14px; border-radius: 14px; background: var(--praso-blue-50); display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+    .x-done strong { display: block; font-size: 13px; font-weight: 600; }
+    .x-done span { font-size: 12px; color: var(--gray-500); }
+    .x-btn-outline { height: 36px; padding: 0 14px; border: 1px solid var(--praso-blue); border-radius: 10px; background: #fff; color: var(--praso-blue); font-size: 13px; font-weight: 600; flex: none; }
+
+    /* M · progresso de categorias */
+    .x-m { padding: 14px 14px 16px; border-radius: 16px; background: var(--praso-blue-50); }
+    .x-m__count { margin-top: 8px; font-size: 13px; font-weight: 600; }
+    .x-m__bar { margin-top: 10px; height: 10px; border-radius: 999px; background: #d3def6; overflow: hidden; }
+    .x-m__bar i { display: block; height: 100%; border-radius: 999px; background: var(--praso-blue); transition: width .5s ease; }
+    .x-m__card { margin-top: 14px; padding: 12px; border-radius: 12px; background: #fff; animation: x-in .3s ease both; }
+    .x-m__card .x-prod { grid-template-columns: 112px minmax(0, 1fr); }
+    .x-m__card .x-prod img { width: 112px; height: 96px; }
+    .x-m__cat { font-size: 11.5px; font-weight: 600; color: var(--praso-blue); }
+    .x-m__add { align-self: flex-end; margin-top: 2px; }
+    .x-m__ok { margin-top: 14px; padding: 14px; border-radius: 12px; background: #fff; display: flex; align-items: center; gap: 12px; }
+    .x-m__ok i { width: 36px; height: 36px; flex: none; border-radius: 50%; background: var(--green-600, #16a34a); color: #fff; display: grid; place-items: center; }
+
+    /* N · notificação expansível a partir do sino */
+    .x-n-overlay { position: absolute; left: 0; right: 0; top: 0; bottom: var(--tabbar-h); border: 0; padding: 0; background: rgba(3, 7, 18, .38); backdrop-filter: blur(1.5px); z-index: 30; animation: x-fade .35s ease both; }
+    .x-n-pop { position: absolute; left: 16px; right: 16px; bottom: calc(var(--tabbar-h) + 14px); z-index: 31; padding: 14px; border-radius: 16px; background: #fff; box-shadow: 0 10px 30px rgba(3, 7, 18, .18); display: flex; flex-direction: column; gap: 10px;
+      transform-origin: 180px calc(100% + 60px); animation: x-pop .5s cubic-bezier(.2, .9, .3, 1.15) both; }
+    .x-n-pop::after { content: ''; position: absolute; left: 172px; bottom: -8px; width: 16px; height: 16px; background: #fff; transform: rotate(45deg); border-radius: 2px; }
+    .x-n-head { display: flex; align-items: center; gap: 8px; }
+    .x-n-head strong { font-size: 14px; font-weight: 600; color: var(--praso-blue); }
+    .x-n-head span { margin-left: auto; font-size: 11px; color: var(--gray-500); }
+    .x-n-close { width: 28px; height: 28px; margin-right: -6px; display: grid; place-items: center; border: 0; background: none; color: #374151; }
+    .x-n-pop .x-prod { grid-template-columns: 112px minmax(0, 1fr); }
+    .x-n-pop .x-prod img { width: 112px; height: 88px; }
+    .x-n-why { font-size: 10.5px; font-weight: 600; color: var(--green-800, #166534); }
+    .x-n-added { height: 44px; border-radius: 10px; background: var(--praso-blue-50); color: var(--praso-blue); font-size: 14px; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 8px; text-decoration: none; }
+    .x-ring svg { transform-origin: 50% 10%; animation: x-ring .8s ease 1; }
+    @keyframes x-pop { 0% { transform: scale(.06); opacity: 0; } 60% { opacity: 1; } 100% { transform: scale(1); opacity: 1; } }
+    @keyframes x-fade { from { opacity: 0; } to { opacity: 1; } }
+    @keyframes x-ring { 0%, 100% { transform: rotate(0); } 20% { transform: rotate(14deg); } 40% { transform: rotate(-12deg); } 60% { transform: rotate(8deg); } 80% { transform: rotate(-4deg); } }
+    .x-notif-foco { margin: 0 var(--page-x); padding: 12px; border: 1.5px solid var(--praso-blue); border-radius: 14px; background: #fff; display: flex; flex-direction: column; gap: 10px; }
+
+    /* seletor de braço (fora do fluxo do app) */
+    .x-arms { position: absolute; top: 4px; left: 50%; transform: translateX(-50%); z-index: 40; display: flex; gap: 2px; padding: 2px; border-radius: 999px; background: rgba(3, 7, 18, .78); }
+    .x-arms a { padding: 3px 8px; border-radius: 999px; color: #fff; font-size: 10px; font-weight: 600; text-decoration: none; opacity: .7; }
+    .x-arms a.is-on { background: #fff; color: #030712; opacity: 1; }
+    .ps-is-device .x-arms { top: max(4px, env(safe-area-inset-top)); }
+  </style>
+</head>
+<body>
+  <div id="app"></div>
+
+  <script src="../../ds/data/catalog.js"></script>
+  <script src="../../ds/praso.js"></script>
+  <script src="../../ds/screens.js"></script>
+  <script>
+    const { ui, icon } = Praso;
+    const brl = Praso.fmt.brl;
+    const qs = new URLSearchParams(location.search);
+    const ARMS = ['controle', 'k', 'm', 'n'];
+    const braco = ARMS.includes(qs.get('braco')) ? qs.get('braco') : 'k';
+    const delay = Number(qs.get('delay') ?? 2) * 1000;
+    const FOCO = 'cobertura-harald';
+    const check = (size, sw) => `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="${sw}" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg>`;
+
+    /* ---------- peças comuns ---------- */
+    const prodInfo = (p, { badge = false, why = '' } = {}) => `
+      <div class="x-prod">
+        <img src="${Praso.productImg(p)}" alt="">
+        <div class="x-prod__info">
+          ${badge ? '<span class="x-badge-new">Novo para você</span>' : ''}
+          <div class="x-prod__name">${Praso.esc(p.name)}</div>
+          ${ui.tag(p.tag)}
+          ${ui.priceBlock(p)}
+          ${why}
+        </div>
+      </div>`;
+
+    const rail = () => `
+      <section class="ps-section ps-section--boxed"><div class="ps-boxcard">
+        <h2 class="ps-boxcard__title-blue">Quem comprou os seus produtos também levou</h2>
+        ${ui.productRail(['mostarda-cepera', 'agua-sanitaria-olimpo', 'oleo-soya', 'margarina-medalha', 'farinha-finna', 'linguica-defumada-seara'], { size: 'sm' })}
+      </div></section>`;
+
+    /* ---------- K · cartões um a um ---------- */
+    const K_ITEMS = [
+      { id: 'cobertura-harald', badge: true, why: 'Mais vendido em Chocolates e Coberturas nos últimos 30 dias' },
+      { id: 'recheio-harald', badge: true, why: 'Mais vendido em Confeitaria nos últimos 30 dias' },
+      { id: 'melken-granule', badge: false, why: 'Clientes parecidos com você compram' },
+    ];
+    let kIdx = 0;
+    let kAdded = 0;
+    const blockK = () => {
+      if (kIdx >= K_ITEMS.length) {
+        const msg = kAdded === 0 ? 'Nenhuma foi adicionada' : kAdded === 1 ? '1 adicionada ao pedido' : `${kAdded} adicionadas ao pedido`;
+        return `<section class="x-sec"><h2 class="x-title">Descubra novidades para seu pedido</h2>
+          <div class="x-done"><div><strong>Você viu as 3 sugestões</strong><span>${msg}</span></div>
+          <button class="x-btn-outline" data-action="x-k-restart">Ver de novo</button></div></section>`;
+      }
+      const it = K_ITEMS[kIdx];
+      const p = Praso.product(it.id);
+      const left = K_ITEMS.length - kIdx;
+      return `<section class="x-sec"><h2 class="x-title">Descubra novidades para seu pedido</h2>
+        <div class="x-muted" style="margin-top:3px">${kIdx + 1} de ${K_ITEMS.length} sugestões</div>
+        <div class="x-k-stack">
+          ${left >= 3 ? '<div class="x-k-back x-k-back--2"></div>' : ''}
+          ${left >= 2 ? '<div class="x-k-back x-k-back--1"></div>' : ''}
+          <article class="x-k-card" data-k="${kIdx}">
+            ${it.badge ? '<span class="x-badge-new">Novo para você</span>' : ''}
+            ${prodInfo(p).replace('<span class="x-badge-new">Novo para você</span>', '')}
+            <div class="x-reason">${it.why}</div>
+            <div class="x-k-actions">
+              <button class="x-btn-ghost" data-action="x-k-skip">Pular</button>
+              <button class="x-btn-blue" data-action="x-k-add">${check(18, 2.4)}Adicionar</button>
+            </div>
+          </article>
+        </div></section>`;
+    };
+
+    /* ---------- M · progresso de categorias ---------- */
+    const M_BASE = 4, M_TOTAL = 6;
+    const M_SUGG = [
+      { id: 'cobertura-harald', cat: 'Chocolates e Coberturas' },
+      { id: 'shoyu-cepera', cat: 'Molhos e Orientais' },
+    ];
+    const blockM = () => {
+      const got = M_SUGG.filter((s) => Praso.cart.qty(s.id) > 0).length;
+      const cats = M_BASE + got;
+      const falta = M_TOTAL - cats;
+      const next = M_SUGG.find((s) => !Praso.cart.qty(s.id));
+      const title = got ? `Com este pedido: ${cats} de ${M_TOTAL} categorias` : `Você já comprou ${cats} de ${M_TOTAL} categorias`;
+      const sub = falta === 0 ? 'Você completou todas as categorias' : falta === 1 ? 'Falta só 1 categoria para uma cesta completa' : `Faltam ${falta} categorias para uma cesta mais variada`;
+      let card;
+      if (next) {
+        const p = Praso.product(next.id);
+        card = `<article class="x-m__card" data-pid="${p.id}"><div class="x-prod">
+            <img src="${Praso.productImg(p)}" alt="">
+            <div class="x-prod__info">
+              <div class="x-m__cat">${next.cat}</div>
+              <div class="x-prod__name">${Praso.esc(p.name)}</div>
+              ${ui.priceBlock(p)}
+              <button class="ps-add ps-add--md x-m__add" data-action="add" data-id="${p.id}" aria-label="Adicionar">${icon('plus', { size: 22, sw: 1.8 })}</button>
+            </div></div></article>`;
+      } else {
+        card = `<div class="x-m__ok"><i>${check(18, 2.6)}</i><div><strong style="font-size:13px;font-weight:600">Cesta completa!</strong><div class="x-muted" style="font-size:12px">Seu pedido tem as ${M_TOTAL} categorias.</div></div></div>`;
+      }
+      return `<section class="x-sec"><div class="x-m">
+        <h2 class="x-title">Amplie seu sortimento</h2>
+        <div class="x-m__count">${title}</div>
+        <div class="x-m__bar"><i style="width:${(cats / M_TOTAL * 100).toFixed(1)}%"></i></div>
+        <div class="x-muted" style="margin-top:8px">${sub}</div>
+        ${card}
+      </div></section>`;
+    };
+
+    /* ---------- N · notificação expansível a partir do sino ---------- */
+    const nState = { open: false, seen: false, timerDone: false };
+    const nPopup = () => {
+      const p = Praso.product(FOCO);
+      const added = Praso.cart.qty(FOCO) > 0;
+      return `<button class="x-n-overlay" data-action="x-n-close" aria-label="Fechar sugestão"></button>
+        <div class="x-n-pop" role="dialog" aria-label="Sugestão para você">
+          <div class="x-n-head"><strong>Para você</strong><span>agora</span>
+            <button class="x-n-close" data-action="x-n-close" aria-label="Fechar">${icon('close', { size: 14, sw: 2.4 })}</button></div>
+          ${prodInfo(p, { badge: true, why: '<div class="x-n-why">Mais vendido em Chocolates e Coberturas</div>' })}
+          ${added
+            ? `<a class="x-n-added" href="#/carrinho" data-action="x-n-close-go">${check(18, 2.4)}Adicionado · ver carrinho</a>`
+            : `<button class="x-btn-blue" data-action="add" data-id="${FOCO}">Adicionar ao carrinho</button>`}
+        </div>`;
+    };
+    function nPaint(root) {
+      root.querySelectorAll('.x-n-layer').forEach((n) => n.remove());
+      const onHome = root.dataset.screen === 'inicio';
+      const bell = root.querySelector('.ps-tabbar__item[href="#/notificacoes"] .ps-tabbar__icon');
+      if (bell && !nState.seen && Praso.cart.qty(FOCO) === 0 && !bell.querySelector('.x-bell-badge')) {
+        bell.insertAdjacentHTML('beforeend', '<span class="ps-tabbar__badge x-bell-badge">1</span>');
+        if (nState.timerDone && !nState.open) bell.classList.add('x-ring');
+      }
+      if (onHome && nState.open) {
+        const layer = document.createElement('div');
+        layer.className = 'x-n-layer';
+        layer.innerHTML = nPopup();
+        root.appendChild(layer);
+      }
+    }
+
+    /* ---------- seletor de braço ---------- */
+    const armsBar = () => `<nav class="x-arms" aria-label="Braço do teste">${ARMS.map((a) =>
+      `<a class="${a === braco ? 'is-on' : ''}" href="?braco=${a}${a === 'n' ? '#/inicio' : '#/carrinho'}">${a === 'controle' ? 'Controle' : a.toUpperCase()}</a>`).join('')}</nav>`;
+
+    /* ---------- telas ---------- */
+    const carrinho = () => {
+      const lines = Praso.cart.lines();
+      if (!lines.length) return Praso.screens.carrinho();
+      const trash = `<button class="ps-iconbtn ps-iconbtn--soft" data-action="clear-cart" aria-label="Esvaziar carrinho">${icon('trash', { size: 22, sw: 1.6 })}</button>`;
+      const block = braco === 'k' ? blockK() : braco === 'm' ? blockM() : rail();
+      return {
+        tab: 'carrinho',
+        header: ui.navHeader({ title: 'Carrinho', action: trash }),
+        body: `<div class="ps-cartlist">${lines.map(ui.cartLine).join('')}</div>${block}<div class="ps-bottom-space--sm"></div>`,
+        footer: ui.checkoutBar({ total: Praso.cart.total(), count: lines.length }),
+      };
+    };
+
+    const screens = { carrinho };
+    if (braco === 'n') {
+      screens.inicio = () => ({ ...Praso.screens.inicio(), onMount: nPaint });
+      screens.notificacoes = () => {
+        const base = Praso.screens.notificacoes();
+        const p = Praso.product(FOCO);
+        const added = Praso.cart.qty(FOCO) > 0;
+        const card = `<div class="ps-mt-2 x-notif-foco">
+            <div class="x-n-head"><strong>Para você</strong><span>agora</span></div>
+            ${prodInfo(p, { badge: true, why: '<div class="x-n-why">Mais vendido em Chocolates e Coberturas</div>' })}
+            ${added ? `<a class="x-n-added" href="#/carrinho">${check(18, 2.4)}Adicionado · ver carrinho</a>`
+                    : `<button class="x-btn-blue" data-action="add" data-id="${FOCO}">Adicionar ao carrinho</button>`}
+          </div>`;
+        return { ...base, body: card + base.body, onMount: () => { nState.seen = true; } };
+      };
+    }
+
+    const app = Praso.app({
+      initial: braco === 'n' ? 'inicio' : 'carrinho',
+      cart: { 'leite-natville': 3, 'redbull-summer': 1 },
+      screens,
+      actions: {
+        'x-k-skip': () => { kIdx++; app.render(); },
+        'x-k-add': () => { const id = K_ITEMS[kIdx].id; kIdx++; kAdded++; Praso.cart.add(id); },
+        'x-k-restart': () => { kIdx = 0; kAdded = 0; app.render(); },
+        'x-n-close': () => { nState.open = false; nState.seen = true; app.render(); },
+        'x-n-close-go': () => { nState.open = false; nState.seen = true; location.hash = '#/carrinho'; },
+      },
+    });
+
+    const root = document.getElementById('app');
+    root.insertAdjacentHTML('beforeend', armsBar());
+
+    if (braco === 'n') {
+      /* re-render da tela atual quando o carrinho muda (atualiza o popup e o card da notificação) */
+      Praso.cart.on(() => { if (root.dataset.screen !== 'carrinho') app.render(); });
+      setTimeout(() => {
+        nState.timerDone = true;
+        if (nState.seen) return;
+        if (root.dataset.screen === 'inicio') nPaint(root);
+        setTimeout(() => { if (!nState.seen) { nState.open = true; app.render(); } }, 700);
+      }, delay);
+    }
+  </script>
+</body>
+</html>
