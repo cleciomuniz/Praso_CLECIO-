@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>NOME DO PROTÓTIPO — Praso</title>
+  <link rel="stylesheet" href="../../ds/tokens.css">
+  <link rel="stylesheet" href="../../ds/components.css">
+  <style>
+    /* Estilos exclusivos deste protótipo. Prefixe com .x- para não colidir com o DS (.ps-). */
+    .x-hello { margin: 16px var(--page-x); padding: 16px; border-radius: var(--r-lg); background: var(--praso-blue-50); color: var(--praso-blue); font-weight: 600; }
+  </style>
+</head>
+<body>
+  <div id="app"></div>
+
+  <script src="../../ds/data/catalog.js"></script>
+  <script src="../../ds/praso.js"></script>
+  <script src="../../ds/screens.js"></script>
+  <script>
+    const { ui } = Praso;
+
+    Praso.app({
+      initial: 'inicio',
+      // cart: {},                          // carrinho inicial (default: Praso.initialCart)
+      screens: {
+        /* Sobrescreva uma tela existente ou crie novas.
+           Todas as outras abas continuam funcionando com as telas padrão. */
+        inicio: () => ({
+          tab: 'inicio',
+          header: `<div class="ps-header__search">${ui.search()}</div>`,
+          body: `
+            <div class="x-hello">✨ Minha nova ideia aqui</div>
+            ${ui.productSection({ title: 'Ofertas da semana', link: 'Ver todas', boxed: true, ids: ['cafe-uniao', 'leite-natville', 'kitkat'] })}
+            ${ui.productSection({ title: 'Confeitaria', ids: ['chanty-amelia', 'nutella', 'margarina-medalha'] })}
+            <div class="ps-bottom-space"></div>`,
+        }),
+      },
+    });
+  </script>
+</body>
+</html>

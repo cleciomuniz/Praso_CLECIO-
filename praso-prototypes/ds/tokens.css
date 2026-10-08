@@ -1,0 +1,102 @@
+/* ==========================================================================
+   Praso Design Tokens
+   Extraídos dos prints do app (iPhone 393×852pt). 1 CSS px = 1 pt iOS.
+   A paleta do app segue a escala Tailwind (gray/green/red) + azul Praso.
+   ========================================================================== */
+:root {
+  /* ---- Marca ---- */
+  --praso-blue: #2053ce;          /* primária: botões, tab ativa, links, splash */
+  --praso-blue-600: #1a46b0;      /* pressed */
+  --praso-blue-400: #356be9;      /* chip de quantidade dentro do stepper */
+  --praso-blue-50: #eef3fe;       /* fundos suaves (botão "Buscar por lista", ícone avatar) */
+  --praso-navy: #000595;          /* banners institucionais (Valelac, Confeitaria) */
+
+  /* ---- Neutros (Tailwind gray) ---- */
+  --white: #ffffff;
+  --gray-50: #f9fafb;
+  --gray-100: #f3f4f6;            /* barra de busca, divisores grossos */
+  --gray-200: #e5e7eb;            /* bordas de card, tags, tab bar */
+  --gray-300: #d1d5db;            /* coração vazio */
+  --gray-400: #9ca3af;            /* preço riscado, tab inativa, "Patrocinado" */
+  --gray-500: #6b7280;            /* texto secundário, placeholder */
+  --gray-700: #374151;            /* texto da tag de embalagem */
+  --gray-950: #030712;            /* texto principal */
+
+  /* ---- Semânticas ---- */
+  --green-600: #16a34a;           /* badge "% OFF" e badge de desconto de combo */
+  --green-800: #166534;           /* preço com desconto */
+  --red-500: #ef4444;             /* badge do carrinho, coração favoritado */
+  --red-600: #dc2626;             /* tag "Val. 13/10" (vencimento próximo) */
+  --orange-500: #f97316;          /* estrela "Você compra muito" */
+  --yellow-400: #facc15;          /* rodapé "Ver ofertas" dos tiles promocionais */
+
+  --text: var(--gray-950);
+  --text-secondary: var(--gray-500);
+  --text-muted: var(--gray-400);
+  --border: var(--gray-200);
+  --bg: var(--white);
+  --bg-subtle: var(--gray-100);
+
+  /* ---- Tipografia ---- */
+  --font: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Inter", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --fs-10: 10px;
+  --fs-11: 11px;
+  --fs-12: 12px;
+  --fs-13: 13px;
+  --fs-14: 14px;
+  --fs-15: 15px;
+  --fs-16: 16px;
+  --fs-17: 17px;
+  --fs-20: 20px;
+  /* Tamanhos calibrados medindo largura de texto nos prints (o app usa tipografia compacta) */
+  --fs-search: 12.5px;            /* placeholder da busca */
+  --fs-section: 14.5px;           /* título de seção ("Ofertas da semana") */
+  --fs-link: 13px;                /* "Ver todos" */
+  --fs-price: 15.5px;             /* preço principal do card */
+  --fs-name: 10.5px;              /* nome do produto */
+  --fs-sub: 11px;                 /* "R$237,80/cx · 20un" */
+  --fs-tag: 10.5px;               /* "CAIXA 20un" */
+  --fs-off: 11px;                 /* "6% OFF" */
+  --fs-tab: 10px;                 /* label da tab bar */
+  --fw-regular: 400;
+  --fw-medium: 500;
+  --fw-semibold: 600;
+  --fw-bold: 700;
+
+  /* ---- Espaçamento (grade de 4) ---- */
+  --sp-1: 4px;
+  --sp-2: 8px;
+  --sp-3: 12px;
+  --sp-4: 16px;
+  --sp-5: 20px;
+  --sp-6: 24px;
+  --sp-8: 32px;
+  --page-x: 16px;                 /* margem lateral padrão das telas */
+
+  /* ---- Raios ---- */
+  --r-xs: 4px;                    /* badge OFF, tag */
+  --r-sm: 6px;
+  --r-md: 10px;                   /* stepper, botões */
+  --r-lg: 12px;                   /* banners */
+  --r-xl: 16px;                   /* cards de seção (Ofertas da semana) */
+  --r-full: 999px;
+
+  /* ---- Sombras ---- */
+  --shadow-card: 0 2px 10px rgba(3, 7, 18, .08);
+  --shadow-sm: 0 1px 2px rgba(3, 7, 18, .06);
+
+  /* ---- Dimensões do device / chrome ---- */
+  --device-w: 393px;
+  --device-h: 852px;
+  --statusbar-h: 54px;
+  --tabbar-h: 80px;               /* 46 de conteúdo + 34 home indicator */
+  --home-indicator-h: 34px;
+
+  /* ---- Componentes ---- */
+  --search-h: 44px;
+  --add-btn: 46px;                /* botão "+" em cards compactos */
+  --add-btn-lg: 54px;             /* botão "+" em grid/rails da página */
+  --stepper-h: 44px;
+  --card-w: 124px;                /* card de produto dentro de seção com borda */
+  --card-w-lg: 146px;             /* card de produto em rail solto na página */
+}

@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>App atual — Praso</title>
+  <link rel="stylesheet" href="../../ds/tokens.css">
+  <link rel="stylesheet" href="../../ds/components.css">
+</head>
+<body>
+  <div id="app"></div>
+
+  <script src="../../ds/data/catalog.js"></script>
+  <script src="../../ds/praso.js"></script>
+  <script src="../../ds/screens.js"></script>
+  <script>
+    /* Baseline: réplica do app em produção (out/2026).
+       Telas: #/splash  #/inicio  #/explorar  #/notificacoes  #/conta  #/carrinho  #/busca */
+    Praso.app({ initial: 'inicio' });
+  </script>
+</body>
+</html>

@@ -1,0 +1,184 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Praso Design System</title>
+<link rel="stylesheet" href="tokens.css">
+<link rel="stylesheet" href="components.css">
+<style>
+  body { background: #fff; height: auto; }
+  .doc { max-width: 1080px; margin: 0 auto; padding: 32px 24px 80px; font-family: Inter, var(--font); }
+  .doc > h1 { font-size: 28px; letter-spacing: -.5px; }
+  .doc > p.lead { color: var(--gray-500); font-size: 15px; margin-top: 6px; max-width: 680px; line-height: 1.5; }
+  .toc { display: flex; flex-wrap: wrap; gap: 6px; margin: 20px 0 8px; }
+  .toc a { font-size: 12.5px; padding: 5px 10px; border-radius: 99px; background: var(--gray-100); color: var(--gray-700); }
+  .toc a:hover { background: var(--praso-blue-50); color: var(--praso-blue); }
+  .block { margin-top: 48px; scroll-margin-top: 16px; }
+  .block > h2 { font-size: 20px; letter-spacing: -.3px; padding-bottom: 10px; border-bottom: 1px solid var(--gray-200); }
+  .block > p { font-size: 13.5px; color: var(--gray-500); margin: 10px 0 0; line-height: 1.5; }
+  .row { display: flex; flex-wrap: wrap; gap: 24px; margin-top: 20px; align-items: flex-start; }
+  .spec { display: flex; flex-direction: column; gap: 10px; }
+  .spec > .lbl { font-size: 11.5px; font-weight: 600; color: var(--gray-500); text-transform: uppercase; letter-spacing: .4px; }
+  pre.code { margin: 0; padding: 10px 12px; border-radius: 8px; background: #0f172a; color: #e2e8f0; font: 12px/1.5 ui-monospace, SFMono-Regular, Menlo, monospace; white-space: pre-wrap; max-width: 520px; }
+  .phonecol { width: 393px; max-width: 100%; border: 1px dashed var(--gray-200); border-radius: 14px; padding: 16px 0; overflow: hidden; }
+  .swatches { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 12px; margin-top: 20px; }
+  .sw { border: 1px solid var(--gray-200); border-radius: 10px; overflow: hidden; }
+  .sw i { display: block; height: 56px; }
+  .sw div { padding: 8px 10px; font-size: 12px; }
+  .sw b { display: block; font-weight: 600; }
+  .sw span { color: var(--gray-500); font-family: ui-monospace, Menlo, monospace; font-size: 11px; }
+  .type-row { display: grid; grid-template-columns: 200px 1fr; align-items: baseline; gap: 16px; padding: 10px 0; border-bottom: 1px solid var(--gray-100); }
+  .type-row code { font-size: 11.5px; color: var(--gray-500); }
+  .catalog { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 24px 16px; margin-top: 20px; }
+  .catalog .ps-card { width: auto; }
+  .catalog .pid { margin-top: 6px; font: 11px ui-monospace, Menlo, monospace; color: var(--praso-blue); cursor: copy; }
+  .tabbar-demo .ps-tabbar { padding-bottom: 10px; height: auto; }
+  .icons { display: grid; grid-template-columns: repeat(auto-fill, minmax(96px, 1fr)); gap: 8px; margin-top: 20px; }
+  .icons div { display: flex; flex-direction: column; align-items: center; gap: 6px; padding: 12px 4px; border: 1px solid var(--gray-100); border-radius: 8px; font: 10.5px ui-monospace, Menlo, monospace; color: var(--gray-500); }
+  .icons svg { color: var(--gray-950); }
+</style>
+</head>
+<body>
+<div class="doc">
+  <h1>Praso Design System</h1>
+  <p class="lead">Tokens e componentes extraídos dos prints do app (iPhone, 393×852pt). Tudo é HTML + CSS + JS puro: inclua <code>tokens.css</code>, <code>components.css</code>, <code>data/catalog.js</code>, <code>praso.js</code> e <code>screens.js</code>, e chame <code>Praso.ui.*</code>. Os componentes abaixo são interativos.</p>
+  <div class="toc" id="toc"></div>
+
+  <section class="block" id="cores"><h2>Cores</h2><p>A paleta do app segue a escala do Tailwind (gray / green / red) + o azul da marca.</p><div class="swatches" id="swatches"></div></section>
+
+  <section class="block" id="tipografia"><h2>Tipografia</h2><p>Fonte do sistema (SF Pro no iOS; Inter como fallback). O app usa tipografia compacta — tamanhos calibrados medindo a largura dos textos nos prints.</p><div id="type"></div></section>
+
+  <section class="block" id="icones"><h2>Ícones</h2><p><code>Praso.icon('nome', { size, sw })</code> — traço 1.6–1.8, cantos arredondados. Variantes <code>-fill</code> são usadas na aba ativa.</p><div class="icons" id="icons"></div></section>
+
+  <section class="block" id="busca"><h2>Busca</h2>
+    <div class="row"><div class="phonecol" id="c-search"></div><pre class="code">ui.search()
+ui.search({ value: 'café' })</pre></div></section>
+
+  <section class="block" id="card"><h2>Card de produto</h2><p>Três tamanhos: <b>sm</b> (124px, dentro de card de seção), <b>md</b> (146px, rail solto) e <b>grid</b> (2 colunas). Estados: botão “+” → stepper azul quando está no carrinho. Clique para testar.</p>
+    <div class="row">
+      <div class="spec"><span class="lbl">sm · com desconto e caixa</span><div id="c-card-sm"></div></div>
+      <div class="spec"><span class="lbl">sm · no carrinho</span><div id="c-card-sm2"></div></div>
+      <div class="spec"><span class="lbl">md · patrocinado</span><div id="c-card-md"></div></div>
+      <div class="spec"><span class="lbl">md · por kg</span><div id="c-card-md2"></div></div>
+      <div class="spec"><span class="lbl">md · vencimento</span><div id="c-card-md3"></div></div>
+    </div>
+    <div class="row"><pre class="code">ui.productCard('cafe-uniao', { size: 'sm' })
+ui.productCard('cobertura-harald', { size: 'md' })
+ui.productRail(['nutella', 'chanty-amelia'], { size: 'md' })
+ui.productGrid(['redbull-summer', 'qualimax-uva'])</pre></div>
+  </section>
+
+  <section class="block" id="atomos"><h2>Átomos</h2>
+    <div class="row" id="c-atoms"></div>
+  </section>
+
+  <section class="block" id="secoes"><h2>Seções</h2><p>Cabeçalho de seção, seção com borda (Ofertas da semana), rail solto, grid, departamentos, prateleira de marca, tiles e combos.</p>
+    <div class="row">
+      <div class="phonecol" id="c-sec-boxed"></div>
+      <div class="phonecol" id="c-sec-rail"></div>
+    </div>
+    <div class="row">
+      <div class="phonecol" id="c-depts"></div>
+      <div class="phonecol" id="c-brand"></div>
+    </div>
+    <div class="row">
+      <div class="phonecol" id="c-combo"></div>
+      <div class="phonecol" id="c-hero"></div>
+    </div>
+    <div class="row"><pre class="code">ui.productSection({ title: 'Ofertas da semana', link: 'Ver todas', boxed: true, ids: [...] })
+ui.productSection({ title: 'Confeitaria', ids: [...] })          // rail solto
+ui.productSection({ title: 'Seus produtos', layout: 'grid', ids: [...] })
+ui.departments()
+ui.brandShelf({ banner: 'harald.png', logo: 'harald-logo.png', name: 'Harald', tagline: '...', ids: [...] })
+ui.comboSection()
+ui.heroCarousel()</pre></div>
+  </section>
+
+  <section class="block" id="carrinho"><h2>Carrinho</h2>
+    <div class="row"><div class="phonecol" id="c-cart"></div><pre class="code">ui.cartLine({ p, q, total, strike })   // ou Praso.cart.lines().map(ui.cartLine)
+ui.stepper(produto, { variant: 'outline' })
+ui.checkoutBar({ total: 320, count: 2 })</pre></div></section>
+
+  <section class="block" id="navegacao"><h2>Navegação</h2>
+    <div class="row"><div class="phonecol tabbar-demo" id="c-tabbar"></div><pre class="code">ui.tabBar('inicio')          // gerado automaticamente pelo Praso.app()
+ui.navHeader({ title: 'Carrinho', back: true, action: '...' })</pre></div></section>
+
+  <section class="block" id="listas"><h2>Listas e cards utilitários</h2>
+    <div class="row"><div class="phonecol" id="c-lists"></div><pre class="code">ui.shoppingListCard()
+ui.categoryCard({ name, img, badge })
+ui.menuItem({ icon: 'truck', label: 'Pedidos' })
+ui.skeletonRail(3)</pre></div></section>
+
+  <section class="block" id="botoes"><h2>Botões</h2>
+    <div class="row" style="max-width:393px;flex-direction:column;align-items:stretch" id="c-btns"></div></section>
+
+  <section class="block" id="catalogo"><h2>Catálogo de produtos</h2><p>Produtos mock (fotos recortadas dos prints). Clique no id para copiar. Para adicionar, edite <code>ds/data/catalog.js</code>.</p><div class="catalog" id="c-catalog"></div></section>
+</div>
+
+<script src="data/catalog.js"></script>
+<script src="praso.js"></script>
+<script src="screens.js"></script>
+<script>
+  const { ui } = Praso;
+  const $ = (id) => document.getElementById(id);
+  Praso.cart.items = { 'leite-natville': 1, 'cafe-uniao': 1 };
+
+  $('toc').innerHTML = [...document.querySelectorAll('.block')].map((b) => `<a href="#${b.id}">${b.querySelector('h2').textContent}</a>`).join('');
+
+  const colors = [
+    ['--praso-blue', 'Azul Praso', 'primária'], ['--praso-blue-400', 'Azul 400', 'chip qtd. stepper'], ['--praso-blue-50', 'Azul 50', 'fundos suaves'], ['--praso-navy', 'Navy', 'banners'],
+    ['--gray-950', 'Gray 950', 'texto'], ['--gray-700', 'Gray 700', 'tags'], ['--gray-500', 'Gray 500', 'secundário'], ['--gray-400', 'Gray 400', 'riscado / inativo'],
+    ['--gray-300', 'Gray 300', 'coração vazio'], ['--gray-200', 'Gray 200', 'bordas'], ['--gray-100', 'Gray 100', 'busca / divisores'],
+    ['--green-800', 'Green 800', 'preço c/ desconto'], ['--green-600', 'Green 600', 'badge OFF'], ['--red-500', 'Red 500', 'badge carrinho / favorito'], ['--red-600', 'Red 600', 'validade'], ['--yellow-400', 'Yellow 400', 'CTA tiles'],
+  ];
+  const cs = getComputedStyle(document.documentElement);
+  $('swatches').innerHTML = colors.map(([v, n, u]) => `<div class="sw"><i style="background:var(${v})"></i><div><b>${n}</b><span>${v}<br>${cs.getPropertyValue(v).trim()}</span><br><span style="font-family:inherit">${u}</span></div></div>`).join('');
+
+  const types = [
+    ['--fs-section', 600, 'Título de seção', 'Ofertas da semana'], ['--fs-price', 700, 'Preço', 'R$11,89/un'], ['--fs-link', 400, 'Link', 'Ver todas'],
+    ['--fs-search', 400, 'Placeholder busca', 'Pesquisar na Praso'], ['--fs-sub', 400, 'Preço por caixa', 'R$237,80/cx · 20un'], ['--fs-off', 600, 'Badge OFF', '6% OFF'],
+    ['--fs-tag', 500, 'Tag de embalagem', 'CAIXA 20un'], ['--fs-name', 400, 'Nome do produto', 'Café Tradicional Vácuo União 250g'], ['--fs-tab', 500, 'Label tab bar', 'Início'],
+  ];
+  $('type').innerHTML = types.map(([v, w, n, ex]) => `<div class="type-row"><div><b style="font-size:13px">${n}</b><br><code>${v} · ${cs.getPropertyValue(v).trim()} · ${w}</code></div><div style="font-family:var(--font);font-size:var(${v});font-weight:${w}">${ex}</div></div>`).join('');
+
+  $('icons').innerHTML = Object.keys(Praso.icons).map((k) => `<div>${Praso.icon(k, { size: 26 })}${k}</div>`).join('');
+
+  function renderAll() {
+    $('c-search').innerHTML = `<div style="padding:0 16px;display:grid;gap:12px">${ui.search()}${ui.search({ value: 'café' })}</div>`;
+    $('c-card-sm').innerHTML = ui.productCard('kitkat', { size: 'sm' });
+    $('c-card-sm2').innerHTML = ui.productCard('cafe-uniao', { size: 'sm' });
+    $('c-card-md').innerHTML = ui.productCard('cobertura-harald', { size: 'md' });
+    $('c-card-md2').innerHTML = ui.productCard('picanha-teys', { size: 'md' });
+    $('c-card-md3').innerHTML = ui.productCard({ ...Praso.product('linguica-calabresa-seara'), expiry: '13/10' }, { size: 'md' });
+    $('c-atoms').innerHTML = `
+      <div class="spec"><span class="lbl">Tag</span><div style="display:flex;gap:6px">${ui.tag('CAIXA 20un')}${ui.tag('1L')}${ui.tag('Aprox. 1.3kg')}</div></div>
+      <div class="spec"><span class="lbl">Badge OFF</span><div>${ui.offBadge(6)}</div></div>
+      <div class="spec"><span class="lbl">Validade</span><div><span class="ps-expiry" style="margin:0">Val. 13/10</span></div></div>
+      <div class="spec"><span class="lbl">Botão +</span><div style="display:flex;gap:10px;align-items:end"><span class="ps-add ps-add--md">${Praso.icon('plus', { size: 26 })}</span><span class="ps-add">${Praso.icon('plus', { size: 30 })}</span></div></div>
+      <div class="spec"><span class="lbl">Stepper solid</span><div style="width:124px">${ui.stepper(Praso.product('cafe-uniao'))}</div></div>
+      <div class="spec"><span class="lbl">Stepper outline</span><div>${ui.stepper(Praso.product('leite-natville'), { variant: 'outline' })}</div></div>
+      <div class="spec"><span class="lbl">Badge carrinho</span><div style="position:relative;width:30px;color:var(--gray-400)">${Praso.icon('cart', { size: 26 })}<span class="ps-tabbar__badge">2</span></div></div>`;
+    $('c-sec-boxed').innerHTML = ui.productSection({ title: 'Ofertas da semana', link: 'Ver todas', boxed: true, ids: ['cafe-uniao', 'leite-natville', 'kitkat'] }).replace('ps-section--boxed', 'ps-section--boxed" style="margin:0');
+    $('c-sec-rail').innerHTML = ui.productSection({ title: 'Confeitaria', ids: ['chanty-amelia', 'nutella', 'margarina-medalha'] }).replace('class="ps-section"', 'class="ps-section" style="margin:0"');
+    $('c-depts').innerHTML = ui.departments().replace('class="ps-section"', 'class="ps-section" style="margin:0"');
+    $('c-brand').innerHTML = ui.brandShelf({ banner: 'harald.png', logo: 'harald-logo.png', name: 'Harald', tagline: 'Fazer melhor é fazer com paixão!', ids: ['cobertura-harald', 'recheio-harald', 'melken-granule'] }).replace('ps-section--boxed', 'ps-section--boxed" style="margin:0');
+    $('c-combo').innerHTML = ui.comboSection().replace('class="ps-section"', 'class="ps-section" style="margin:0"');
+    $('c-hero').innerHTML = `<div class="ps-page-pad">${ui.heroCarousel()}</div><div class="ps-page-pad" style="margin-top:16px">${ui.banner({ img: 'indica-praso.png' })}</div>`;
+    $('c-cart').innerHTML = `${ui.navHeader({ title: 'Carrinho', action: `<button class="ps-iconbtn ps-iconbtn--soft">${Praso.icon('trash', { size: 22, sw: 1.6 })}</button>` })}<div class="ps-cartlist">${Praso.cart.lines().map(ui.cartLine).join('')}</div>${ui.checkoutBar({ total: Praso.cart.total(), count: Praso.cart.count() })}`;
+    $('c-tabbar').innerHTML = ['inicio', 'explorar', 'carrinho'].map((t) => ui.tabBar(t)).join('<div style="height:12px"></div>');
+    $('c-lists').innerHTML = `<div class="ps-page-pad" style="display:grid;gap:16px">${ui.shoppingListCard()}<div class="ps-catgrid">${ui.categoryCard({ name: 'Bebidas Não-Alcoólicas', img: 'bebidas-cat.png', badge: 'Você compra muito' })}${ui.categoryCard({ name: 'Mercearia', img: 'mercearia-cat.png' })}</div><div class="ps-menu">${ui.menuItem({ icon: 'truck', label: 'Pedidos' })}${ui.menuItem({ icon: 'money', label: 'Pagamentos' })}</div></div>${ui.skeletonRail(3)}`;
+    $('c-btns').innerHTML = `${ui.button({ label: 'Continuar para pagamento', block: true, size: 'lg' })}${ui.button({ label: 'Adicionar ao carrinho', block: true })}${ui.button({ label: 'Secundário', variant: 'secondary', block: true })}${ui.button({ label: 'Ghost', variant: 'ghost', block: true })}`;
+    $('c-catalog').innerHTML = Praso.catalog.map((p) => `<div>${ui.productCard(p, { size: 'grid' })}<div class="pid" data-copy="${p.id}">'${p.id}'</div></div>`).join('');
+  }
+  renderAll();
+  Praso.cart.on(renderAll);
+  document.addEventListener('click', (e) => {
+    const c = e.target.closest('[data-copy]'); if (c) { navigator.clipboard?.writeText(c.dataset.copy); c.textContent = 'copiado ✓'; setTimeout(() => (c.textContent = `'${c.dataset.copy}'`), 900); return; }
+    const b = e.target.closest('[data-action]'); if (!b) return; e.preventDefault();
+    const { action, id } = b.dataset;
+    if (action === 'add') Praso.cart.add(id); else if (action === 'dec') Praso.cart.dec(id); else if (action === 'fav') Praso.cart.toggleFav(id);
+  });
+</script>
+</body>
+</html>
