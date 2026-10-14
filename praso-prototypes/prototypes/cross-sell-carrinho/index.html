@@ -38,9 +38,6 @@
     .x-arms a { padding: 3px 8px; border-radius: 999px; color: #fff; font-size: 10px; font-weight: 600; text-decoration: none; opacity: .7; }
     .x-arms a.is-on { background: #fff; color: #030712; opacity: 1; }
     .ps-is-device .x-arms { top: max(4px, env(safe-area-inset-top)); }
-    /* Embed (Notion etc.): tela de celular 393x852 centralizada e escalada para caber no iframe */
-    html.x-embed, html.x-embed body { height: 100%; margin: 0; overflow: hidden; background: #e9ebef; }
-    html.x-embed .ps-app { position: absolute; left: 50%; top: 50%; width: 393px; height: 852px; max-width: none; border-radius: 28px; transform-origin: center; box-shadow: 0 0 0 6px #111, 0 12px 30px rgba(0,0,0,.25); }
   </style>
 </head>
 <body>
@@ -104,19 +101,6 @@
     document.getElementById('app').insertAdjacentHTML('beforeend',
       `<nav class="x-arms" aria-label="Posição do cross-sell">${Object.entries(ARMS).map(([a, n]) =>
         `<a class="${a === braco ? 'is-on' : ''}" href="?braco=${a}#/carrinho">${n}</a>`).join('')}</nav>`);
-
-    (function () {
-      if (window.self === window.top) return;
-      if (Math.abs(innerWidth - 393) < 3 && Math.abs(innerHeight - 852) < 3) return; /* playground: já é a moldura do celular */
-      const h = document.documentElement;
-      h.classList.add('x-embed');
-      const fit = () => {
-        const k = Math.min((innerWidth - 24) / 393, (innerHeight - 24) / 852, 1);
-        const app = document.querySelector('.ps-app');
-        if (app) app.style.transform = 'translate(-50%,-50%) scale(' + k + ')';
-      };
-      addEventListener('resize', fit); fit(); setTimeout(fit, 100);
-    })();
   </script>
 </body>
 </html>
