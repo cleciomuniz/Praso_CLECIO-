@@ -110,17 +110,47 @@
     .x-link button { height: 28px; padding: 0 10px; border-radius: 8px; background: #fff; border: 1px solid var(--gray-200); color: var(--praso-blue); font-size: 12px; font-weight: 600; }
     .x-note { margin: 8px 16px 0; font-size: 11px; color: var(--gray-400); text-align: center; }
 
-    /* share sheet (simulação da folha nativa) */
-    .x-share { position: absolute; inset: 0; z-index: 65; display: flex; align-items: flex-end; background: rgba(3, 7, 18, .35); animation: x-fade .15s ease; }
-    .x-share__box { width: 100%; padding: 8px 16px 30px; border-radius: 20px 20px 0 0; background: #f2f2f7; animation: x-up .2s ease; }
-    .x-share__prev { display: flex; align-items: center; gap: 10px; margin: 10px 0 14px; padding: 10px; border-radius: 12px; background: #fff; }
-    .x-share__prev i { width: 40px; height: 40px; flex: none; border-radius: 10px; background: var(--praso-blue); display: grid; place-items: center; color: #fff; font-style: normal; font-weight: 800; font-size: 18px; }
-    .x-share__prev b { display: block; font-size: 13px; }
-    .x-share__prev span { font-size: 11.5px; color: var(--gray-500); }
-    .x-share__apps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; text-align: center; font-size: 11px; color: var(--gray-700); }
-    .x-share__apps button { display: grid; justify-items: center; gap: 6px; }
-    .x-share__apps i { width: 56px; height: 56px; border-radius: 14px; display: grid; place-items: center; color: #fff; }
-    .x-share__cancel { margin-top: 16px; width: 100%; height: 48px; border-radius: 12px; background: #fff; color: var(--praso-blue); font-size: 15px; font-weight: 600; }
+    /* pop-up de indicação · identidade da página Indique e Ganhe ("Indicou 3, ganhou") */
+    .x-ov--sheet .x-pop.x-ig { background: #e9effb; padding-bottom: 20px; }
+    .x-ig__hero { position: relative; overflow: hidden; flex: none; background: #2053ce; padding: 24px 16px 58px; display: flex; align-items: center; gap: 4px; color: #fff; }
+    .x-ig__hero::before { content: ""; position: absolute; right: -150px; top: -120px; width: 340px; height: 340px; border-radius: 50%; background: #2e62dc; }
+    .x-ig__grab { position: absolute; top: 8px; left: 50%; transform: translateX(-50%); z-index: 2; width: 36px; height: 5px; border-radius: 3px; background: rgba(255, 255, 255, .45); }
+    .x-ig .x-pop__x { background: rgba(255, 255, 255, .16); }
+    .x-ig__txt { position: relative; flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 6px; }
+    .x-ig__over { font-size: 11px; font-weight: 700; letter-spacing: .6px; text-transform: uppercase; opacity: .85; }
+    .x-ig h2 { font-size: 31px; line-height: 33px; font-weight: 900; letter-spacing: -.02em; text-shadow: 0 3px 0 #10307f; }
+    .x-ig__sub { font-size: 13.5px; line-height: 20px; font-weight: 600; white-space: nowrap; }
+    .x-ig__seal { position: relative; flex: none; width: 116px; height: 120px; margin: 8px -2px 0 0; }
+    .x-ig__card { position: relative; z-index: 1; margin: -44px 16px 0; padding: 12px; display: flex; flex-direction: column; gap: 6px; border: 1px solid var(--gray-200); border-radius: 12px; background: #fff; box-shadow: 0 6px 16px rgba(16, 48, 127, .12); }
+    .x-ig__cta { height: 48px; border-radius: 10px; background: #fad705; color: #14246b; font-size: 16px; font-weight: 800; display: flex; align-items: center; justify-content: center; gap: 8px; box-shadow: 0 2px 0 #d4a90a; }
+    .x-ig__cta:active { transform: translateY(1px); box-shadow: 0 1px 0 #d4a90a; }
+    .x-ig__row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    .x-ig__btn { height: 44px; border-radius: 10px; border: 1px solid var(--gray-200); background: #fff; color: #1f2937; font-size: 14px; font-weight: 700; display: flex; align-items: center; justify-content: center; gap: 6px; }
+    .x-ig__btn--blue { border-color: #2053ce; color: #2053ce; }
+    .x-ig__box { margin: 12px 16px 0; padding: 16px; display: flex; flex-direction: column; gap: 14px; border-radius: 12px; background: #fff; box-shadow: 0 0 1px rgba(0, 0, 0, .15), 0 1px 1px rgba(0, 0, 0, .05); }
+    .x-ig__boxhead { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; }
+    .x-ig__boxhead h3 { font-size: 16px; line-height: 24px; font-weight: 700; }
+    .x-ig__chip { font-size: 12px; font-weight: 700; color: #123da1; background: #fef3c7; padding: 2px 8px; border-radius: 999px; white-space: nowrap; }
+    .x-ig__steps { margin: 0; padding: 0; list-style: none; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+    .x-ig__steps li { position: relative; display: flex; flex-direction: column; align-items: center; gap: 6px; text-align: center; font-size: 12.5px; line-height: 1.35; font-weight: 600; color: #111827; }
+    .x-ig__steps li:not(:last-child)::after { content: ""; position: absolute; top: 19px; left: calc(50% + 26px); right: calc(-50% + 26px); height: 2px; background: #c0d3fd; }
+    .x-ig__ico { position: relative; width: 40px; height: 40px; border-radius: 12px; background: #2053ce; color: #fff; display: grid; place-items: center; }
+    .x-ig__ico b { position: absolute; top: -6px; right: -6px; width: 18px; height: 18px; border-radius: 50%; background: #fad705; color: #030712; font-size: 11px; font-weight: 800; display: grid; place-items: center; }
+    .x-ig__rules { margin: 12px 20px 0; font-size: 11px; line-height: 1.45; color: var(--gray-500); }
+
+    /* folha "Indicar" (mesma da página Indique e Ganhe) */
+    .x-sh { position: absolute; inset: 0; z-index: 65; display: flex; flex-direction: column; justify-content: flex-end; background: rgba(0, 0, 0, .6); animation: x-fade .15s ease; }
+    .x-sh__box { padding: 20px 20px 28px; display: flex; flex-direction: column; gap: 14px; border-radius: 16px 16px 0 0; background: #fff; animation: x-up .2s ease; }
+    .x-sh__head { display: flex; justify-content: space-between; align-items: center; }
+    .x-sh__head h2 { font-size: 18px; line-height: 26px; font-weight: 600; }
+    .x-sh__head button { width: 44px; height: 44px; margin-right: -12px; display: grid; place-items: center; color: var(--gray-700); }
+    .x-sh__label { font-size: 12px; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; color: #4b5563; }
+    .x-sh__msg { border-radius: 4px 12px 12px 12px; background: #e7f8ee; padding: 12px 14px; font-size: 14px; line-height: 20px; color: #030712; }
+    .x-sh__opts { display: flex; flex-direction: column; gap: 8px; }
+    .x-sh__opt { min-height: 56px; padding: 8px 12px; display: flex; align-items: center; gap: 12px; text-align: left; border: 1px solid var(--gray-200); border-radius: 10px; background: #fff; }
+    .x-sh__opt span { display: flex; flex-direction: column; }
+    .x-sh__opt b { font-size: 14px; color: #030712; }
+    .x-sh__opt small { font-size: 12px; color: #4b5563; }
 
     /* página de indicação (destino do "Ver mais") */
     .x-indpage .ps-banner { margin: 8px 16px 0; }
@@ -237,30 +267,64 @@
         <li><span>A indicação vale quando o <b>1º pedido do indicado tem R$100 ou mais</b> e é entregue e pago.</span></li>
         <li><span>Seu link vale por 30 dias. O crédito cai em poucas horas e não expira.</span></li>
       </ol>`;
-    const popIndica = () => `<div class="x-ov x-ov--sheet" data-r="ov"><div class="x-pop">
-        <div class="x-grab"></div>
-        <button class="x-pop__x" style="background:var(--bg-subtle);color:var(--gray-500)" data-action="close-pop" aria-label="Fechar">${icon('close', { size: 18, sw: 2.2 })}</button>
+    /* selo "R$450" (estrela amarela com sombra azul, como na página Indique e Ganhe) */
+    const seal = () => {
+      const pts = (cx, cy) => Array.from({ length: 48 }, (_, i) => {
+        const r = i % 2 ? 44 : 51, ang = (Math.PI * i) / 24 - Math.PI / 2;
+        return (cx + r * Math.cos(ang)).toFixed(1) + ',' + (cy + r * Math.sin(ang)).toFixed(1);
+      }).join(' ');
+      return `<svg class="x-ig__seal" viewBox="0 0 112 116" aria-label="R$450">
+        <polygon points="${pts(57, 61)}" fill="#14246b"/><polygon points="${pts(53, 55)}" fill="#fcc419"/>
+        <circle cx="53" cy="55" r="37" fill="none" stroke="rgba(20,36,107,.2)" stroke-width="1.2"/>
+        <text x="53" y="46" text-anchor="middle" font-family="Inter, sans-serif" font-size="16" font-weight="800" fill="#14246b">R$</text>
+        <text x="53" y="76" text-anchor="middle" font-family="Inter, sans-serif" font-size="31" font-weight="900" fill="#14246b">450</text></svg>`;
+    };
+    const ICO = {
+      store: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M4 10v10h16V10"/><path d="M3 5h18l-1 5H4L3 5z" stroke-linejoin="round"/><path d="M10 20v-5h4v5"/></svg>',
+      cart: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M3 4h2l2.4 11h10.2L20 7H6.2" stroke-linejoin="round"/><circle cx="9" cy="19.5" r="1.3"/><circle cx="17" cy="19.5" r="1.3"/></svg>',
+      truck: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M3 7h11v9H3zM14 10h4l3 3v3h-7"/><circle cx="7" cy="17.5" r="1.6"/><circle cx="17" cy="17.5" r="1.6"/></svg>',
+      link: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M10 14a4 4 0 005.7 0l3-3a4 4 0 00-5.7-5.7l-1 1M14 10a4 4 0 00-5.7 0l-3 3a4 4 0 005.7 5.7l1-1" stroke-linecap="round"/></svg>',
+      wpp: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#059669" stroke-width="1.7"><path d="M4 20l1.3-3.9A8 8 0 1112 20a8 8 0 01-3.9-1L4 20z" stroke-linejoin="round"/></svg>',
+      qr: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2053CE" stroke-width="1.6"><rect x="4" y="4" width="6" height="6" rx="1"/><rect x="14" y="4" width="6" height="6" rx="1"/><rect x="4" y="14" width="6" height="6" rx="1"/><path d="M14 14h2v2h-2zM18 18h2v2h-2z"/></svg>',
+      share: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2053CE" stroke-width="1.6"><path d="M12 15V4M8 8l4-4 4 4" stroke-linecap="round" stroke-linejoin="round"/><path d="M5 12v7a1 1 0 001 1h12a1 1 0 001-1v-7" stroke-linecap="round"/></svg>',
+    };
+    const MSG = `Oi, você já conhece a Praso? O app que tem tudo para o seu negócio! Entrega no dia seguinte, com frete grátis e sem pedido mínimo. Crie sua conta pelo meu link: ${LINK}`;
+
+    const popIndica = () => `<div class="x-ov x-ov--sheet" data-r="ov"><div class="x-pop x-ig">
         <div class="x-pop__body">
-          <div class="x-ind__head"><div class="x-over">Indique e Ganhe</div><h2>Ganhe <em>R$100</em> por amigo que fizer o 1º pedido</h2><p>Mande seu link agora para quem tem restaurante, lanchonete ou outro negócio de alimentação.</p></div>
-          <div class="x-rules"><h3>Como funciona</h3>${RULES}</div>
-          <div class="x-ind__actions">
-            <div class="x-link"><span>${LINK}</span><button data-action="copy">Copiar</button></div>
-            <button class="ps-btn ps-btn--primary ps-btn--block ps-btn--lg" data-action="share">Indicar agora ${icon('arrow-right', { size: 18, sw: 2.2 })}</button>
-            <a class="ps-btn ps-btn--secondary ps-btn--block" href="#/indique" data-action="close-go" data-go="#/indique">Ver mais</a>
+          <div class="x-ig__hero"><span class="x-ig__grab"></span>
+            <button class="x-pop__x" data-action="close-pop" aria-label="Fechar">${icon('close', { size: 18, sw: 2.2 })}</button>
+            <div class="x-ig__txt"><span class="x-ig__over">Indique e Ganhe</span><h2>Indicou 3,<br>ganhou</h2><p class="x-ig__sub">3 × R$100 + R$150 de bônus</p></div>
+            ${seal()}
           </div>
+          <div class="x-ig__card">
+            <button class="x-ig__cta" data-action="share">Indicar agora ${icon('arrow-right', { size: 18, sw: 2.4 })}</button>
+            <div class="x-ig__row">
+              <button class="x-ig__btn x-ig__btn--blue" data-action="copy">${ICO.link}Copiar link</button>
+              <a class="x-ig__btn" href="#/indique" data-action="close-go" data-go="#/indique">Ver mais</a>
+            </div>
+          </div>
+          <section class="x-ig__box">
+            <div class="x-ig__boxhead"><h3>Como funciona</h3><span class="x-ig__chip">+ R$150 a cada 3</span></div>
+            <ol class="x-ig__steps">
+              <li><span class="x-ig__ico">${ICO.store}<b>1</b></span>CNPJ cria a conta pelo seu link</li>
+              <li><span class="x-ig__ico">${ICO.cart}<b>2</b></span>Faz o 1º pedido de R$100 ou mais</li>
+              <li><span class="x-ig__ico">${ICO.truck}<b>3</b></span>Pedido entregue: R$100 para você</li>
+            </ol>
+          </section>
+          <p class="x-ig__rules">Vale para CNPJ do ramo alimentício sem cadastro na Praso, em região atendida. A indicação conta quando o 1º pedido do indicado, a partir de R$100, for entregue. O crédito vai para a sua carteira Praso e não expira.</p>
         </div>
       </div></div>`;
 
-    const shareSheet = () => `<div class="x-share" data-r="share" data-action="share-bg"><div class="x-share__box">
-        <div class="x-grab" style="margin-top:0"></div>
-        <div class="x-share__prev"><i>p</i><div><b>Faça seu 1º pedido na Praso</b><span>${LINK}</span></div></div>
-        <div class="x-share__apps">
-          <button data-action="share-pick" data-label="WhatsApp"><i style="background:#25d366">${icon('chat', { size: 28, sw: 1.8 })}</i>WhatsApp</button>
-          <button data-action="share-pick" data-label="Mensagens"><i style="background:#34c759">${icon('chat', { size: 28, sw: 1.8 })}</i>Mensagens</button>
-          <button data-action="copy"><i style="background:#8e8e93">${icon('doc', { size: 26, sw: 1.8 })}</i>Copiar link</button>
-          <button data-action="share-pick" data-label="Mais opções"><i style="background:#c7c7cc;color:#030712;font-style:normal;font-weight:700;font-size:20px">•••</i>Mais</button>
+    const shareSheet = () => `<div class="x-sh" data-r="share" data-action="share-bg"><div class="x-sh__box">
+        <div class="x-sh__head"><h2>Indicar</h2><button data-action="share-close" aria-label="Fechar">${icon('close', { size: 22, sw: 1.5 })}</button></div>
+        <p class="x-sh__label">Mensagem que seu amigo recebe</p>
+        <div class="x-sh__msg">${MSG}</div>
+        <div class="x-sh__opts">
+          <button class="x-sh__opt" data-action="share-pick" data-label="WhatsApp">${ICO.wpp}<span><b>Enviar pelo WhatsApp</b><small>Abre o WhatsApp com a mensagem pronta</small></span></button>
+          <button class="x-sh__opt" data-action="share-pick" data-label="QR code">${ICO.qr}<span><b>QR code</b><small>Para mostrar no balcão ou para um fornecedor</small></span></button>
+          <button class="x-sh__opt" data-action="share-pick" data-label="outros apps">${ICO.share}<span><b>Outros apps</b><small>Instagram, SMS, e-mail</small></span></button>
         </div>
-        <button class="x-share__cancel" data-action="share-close">Cancelar</button>
       </div></div>`;
 
     /* destino do "Ver mais": página de Indicações (simplificada) */
@@ -307,8 +371,8 @@
         share: () => { root().insertAdjacentHTML('beforeend', shareSheet()); },
         'share-bg': (b, e) => { if (e.target === b) b.remove(); },
         'share-close': () => root().querySelector('[data-r="share"]')?.remove(),
-        'share-pick': (b) => { root().querySelector('[data-r="share"]')?.remove(); toast(`Abrindo ${b.dataset.label}… (no app, abre a folha nativa)`, false); },
-        copy: () => { root().querySelector('[data-r="share"]')?.remove(); try { navigator.clipboard.writeText('https://' + LINK); } catch (e) {} toast('Link copiado', false); },
+        'share-pick': (b) => { root().querySelector('[data-r="share"]')?.remove(); toast(`Abrindo ${b.dataset.label}… (simulação)`, false); },
+        copy: () => { root().querySelector('[data-r="share"]')?.remove(); try { navigator.clipboard.writeText('https://' + LINK).catch(() => {}); } catch (e) {} toast('Link copiado', false); },
         'reopen': () => { closePop(); openPop(); },
       },
     });
