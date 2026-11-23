@@ -86,7 +86,21 @@
     .x-pop__head h2 { margin-top: 4px; font-size: 19px; font-weight: 800; letter-spacing: -.3px; line-height: 1.2; }
     .x-pop__head p { margin-top: 4px; font-size: 12.5px; opacity: .85; line-height: 1.35; }
     .x-pop__body { overflow-y: auto; scrollbar-width: none; }
-    .x-pop .ps-rail { padding-top: 16px; padding-bottom: 4px; }
+    .x-p1grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding: 12px 16px 4px; }
+    .x-p1grid .ps-card--sm { width: auto; min-width: 0; }
+    .x-p1grid .ps-card__media { height: 92px; }
+    .x-p1grid .ps-card__media > img { padding: 4px 26px 12px; }
+    .x-p1grid .ps-card__action { transform: scale(.82); transform-origin: bottom right; }
+    .x-p1grid .ps-card__action:has(.ps-stepper) { transform: none; left: 0; }
+    .x-p1grid .ps-card__fav, .x-p1grid .ps-card__sponsored, .x-p1grid .ps-tag { display: none; }
+    .x-p1grid .ps-card__body { padding-top: 2px; }
+    .x-p1grid .ps-card__name { -webkit-line-clamp: 2; }
+    .x-pop__head--sm { padding: 14px 52px 12px 16px; }
+    .x-pop__head--sm h2 { font-size: 17px; }
+    .x-pop__head--sm p { font-size: 12px; }
+    .x-pop__foot--sm { padding: 10px 16px 12px; }
+    .x-pop__foot--sm .x-pop__sum { margin-bottom: 8px; }
+    .x-pop__foot--sm .x-pop__link { margin-top: 8px; }
     .x-pop__foot { padding: 12px 16px 16px; border-top: 1px solid var(--gray-200); }
     .x-pop__sum { margin-bottom: 10px; font-size: 12.5px; color: var(--gray-500); text-align: center; }
     .x-pop__sum b { color: var(--text); }
@@ -111,16 +125,17 @@
     .x-note { margin: 8px 16px 0; font-size: 11px; color: var(--gray-400); text-align: center; }
 
     /* pop-up de indicação · identidade da página Indique e Ganhe ("Indicou 3, ganhou") */
-    .x-ov--sheet .x-pop.x-ig { background: #e9effb; padding-bottom: 20px; }
-    .x-ig__hero { position: relative; overflow: hidden; flex: none; background: #2053ce; padding: 24px 16px 58px; display: flex; align-items: center; gap: 4px; color: #fff; }
+    .x-pop.x-ig { background: #e9effb; }
+    .x-ig .x-pop__body { padding-bottom: 14px; }
+    .x-ig__hero { position: relative; overflow: hidden; flex: none; background: #2053ce; padding: 16px 16px 54px; display: flex; align-items: center; gap: 4px; color: #fff; }
     .x-ig__hero::before { content: ""; position: absolute; right: -150px; top: -120px; width: 340px; height: 340px; border-radius: 50%; background: #2e62dc; }
     .x-ig__grab { position: absolute; top: 8px; left: 50%; transform: translateX(-50%); z-index: 2; width: 36px; height: 5px; border-radius: 3px; background: rgba(255, 255, 255, .45); }
     .x-ig .x-pop__x { background: rgba(255, 255, 255, .16); }
     .x-ig__txt { position: relative; flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 6px; }
     .x-ig__over { font-size: 11px; font-weight: 700; letter-spacing: .6px; text-transform: uppercase; opacity: .85; }
-    .x-ig h2 { font-size: 31px; line-height: 33px; font-weight: 900; letter-spacing: -.02em; text-shadow: 0 3px 0 #10307f; }
+    .x-ig h2 { font-size: 28px; line-height: 30px; font-weight: 900; letter-spacing: -.02em; text-shadow: 0 3px 0 #10307f; }
     .x-ig__sub { font-size: 13.5px; line-height: 20px; font-weight: 600; white-space: nowrap; }
-    .x-ig__seal { position: relative; flex: none; width: 116px; height: 120px; margin: 8px -2px 0 0; }
+    .x-ig__seal { position: relative; flex: none; width: 104px; height: 108px; margin: 14px 18px 0 0; }
     .x-ig__card { position: relative; z-index: 1; margin: -44px 16px 0; padding: 12px; display: flex; flex-direction: column; gap: 6px; border: 1px solid var(--gray-200); border-radius: 12px; background: #fff; box-shadow: 0 6px 16px rgba(16, 48, 127, .12); }
     .x-ig__cta { height: 48px; border-radius: 10px; background: #fad705; color: #14246b; font-size: 16px; font-weight: 800; display: flex; align-items: center; justify-content: center; gap: 8px; box-shadow: 0 2px 0 #d4a90a; }
     .x-ig__cta:active { transform: translateY(1px); box-shadow: 0 1px 0 #d4a90a; }
@@ -136,11 +151,11 @@
     .x-ig__steps li:not(:last-child)::after { content: ""; position: absolute; top: 19px; left: calc(50% + 26px); right: calc(-50% + 26px); height: 2px; background: #c0d3fd; }
     .x-ig__ico { position: relative; width: 40px; height: 40px; border-radius: 12px; background: #2053ce; color: #fff; display: grid; place-items: center; }
     .x-ig__ico b { position: absolute; top: -6px; right: -6px; width: 18px; height: 18px; border-radius: 50%; background: #fad705; color: #030712; font-size: 11px; font-weight: 800; display: grid; place-items: center; }
-    .x-ig__rules { margin: 12px 20px 0; font-size: 11px; line-height: 1.45; color: var(--gray-500); }
+    .x-ig__rules { margin: 10px 18px 0; font-size: 11px; line-height: 1.45; color: var(--gray-500); }
 
     /* folha "Indicar" (mesma da página Indique e Ganhe) */
-    .x-sh { position: absolute; inset: 0; z-index: 65; display: flex; flex-direction: column; justify-content: flex-end; background: rgba(0, 0, 0, .6); animation: x-fade .15s ease; }
-    .x-sh__box { padding: 20px 20px 28px; display: flex; flex-direction: column; gap: 14px; border-radius: 16px 16px 0 0; background: #fff; animation: x-up .2s ease; }
+    .x-sh { position: absolute; inset: 0; z-index: 65; display: flex; align-items: center; justify-content: center; padding: 16px; background: rgba(0, 0, 0, .6); animation: x-fade .15s ease; }
+    .x-sh__box { width: 100%; padding: 16px 18px 18px; display: flex; flex-direction: column; gap: 12px; border-radius: 20px; background: #fff; animation: x-up .2s ease; }
     .x-sh__head { display: flex; justify-content: space-between; align-items: center; }
     .x-sh__head h2 { font-size: 18px; line-height: 26px; font-weight: 600; }
     .x-sh__head button { width: 44px; height: 44px; margin-right: -12px; display: grid; place-items: center; color: var(--gray-700); }
@@ -243,7 +258,7 @@
     };
 
     /* ===================== P1 · pop-up mini vitrine */
-    const P1_IDS = ['cobertura-harald', 'recheio-harald', 'melken-granule', 'nutella', 'kitkat'];
+    const P1_IDS = ['cobertura-harald', 'recheio-harald', 'melken-granule', 'nutella'];
     const p1Sum = () => {
       const added = P1_IDS.filter((id) => Praso.cart.qty(id));
       if (!added.length) return '<div class="x-pop__sum">Adicione direto daqui, sem sair da tela.</div>';
@@ -252,9 +267,9 @@
     };
     const popP1 = () => `<div class="x-ov" data-r="ov"><div class="x-pop">
         <button class="x-pop__x" data-action="close-pop" aria-label="Fechar">${icon('close', { size: 18, sw: 2.2 })}</button>
-        <div class="x-pop__head"><div class="x-over">Só hoje</div><h2>Quarta dos Doces 🍫</h2><p>Coberturas e recheios com desconto. Adicione ao carrinho por aqui mesmo.</p></div>
-        <div class="x-pop__body">${ui.productRail(P1_IDS, { size: 'sm' })}</div>
-        <div class="x-pop__foot"><div data-r="p1sum">${p1Sum()}</div>
+        <div class="x-pop__head x-pop__head--sm"><div class="x-over">Só hoje</div><h2>Quarta dos Doces 🍫</h2><p>Coberturas e recheios com desconto. Adicione ao carrinho por aqui mesmo.</p></div>
+        <div class="x-pop__body x-p1grid">${P1_IDS.map((id) => ui.productCard(id, { size: 'sm' })).join('')}</div>
+        <div class="x-pop__foot x-pop__foot--sm"><div data-r="p1sum">${p1Sum()}</div>
           <button class="ps-btn ps-btn--secondary ps-btn--block" data-action="close-pop" data-r="p1cta">Agora não</button>
           <a class="x-pop__link" href="#/explorar" data-action="close-go" data-go="#/explorar">Ver todas as ofertas da Quarta dos Doces</a></div>
       </div></div>`;
@@ -290,9 +305,9 @@
     };
     const MSG = `Oi, você já conhece a Praso? O app que tem tudo para o seu negócio! Entrega no dia seguinte, com frete grátis e sem pedido mínimo. Crie sua conta pelo meu link: ${LINK}`;
 
-    const popIndica = () => `<div class="x-ov x-ov--sheet" data-r="ov"><div class="x-pop x-ig">
+    const popIndica = () => `<div class="x-ov" data-r="ov"><div class="x-pop x-ig">
         <div class="x-pop__body">
-          <div class="x-ig__hero"><span class="x-ig__grab"></span>
+          <div class="x-ig__hero">
             <button class="x-pop__x" data-action="close-pop" aria-label="Fechar">${icon('close', { size: 18, sw: 2.2 })}</button>
             <div class="x-ig__txt"><span class="x-ig__over">Indique e Ganhe</span><h2>Indicou 3,<br>ganhou</h2><p class="x-ig__sub">3 × R$100 + R$150 de bônus</p></div>
             ${seal()}
