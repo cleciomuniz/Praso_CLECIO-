@@ -1,0 +1,337 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Comunicações acionáveis — Praso</title>
+  <link rel="stylesheet" href="../../ds/tokens.css">
+  <link rel="stylesheet" href="../../ds/components.css">
+  <style>
+    /* Redução de fricção nas comunicações do app: banners e pop-ups com ação no próprio lugar. Prefixo .x- */
+
+    /* ---------- seletor de caso (topo) */
+    .x-arms { position: absolute; top: 4px; left: 50%; transform: translateX(-50%); z-index: 70; display: flex; gap: 2px; padding: 2px; border-radius: 999px; background: rgba(3, 7, 18, .78); white-space: nowrap; }
+    .x-arms a, .x-arms button { padding: 3px 7px; border-radius: 999px; color: #fff; font-size: 10px; font-weight: 600; opacity: .7; }
+    .x-arms a.is-on { background: #fff; color: #030712; opacity: 1; }
+    .x-arms button { opacity: 1; }
+    .ps-is-device .x-arms { top: max(4px, env(safe-area-inset-top)); }
+
+    /* ---------- banner (hero) interativo */
+    .x-hero { position: relative; margin-top: 16px; height: 156px; border-radius: var(--r-lg); overflow: hidden; color: #fff;
+      background: radial-gradient(120% 140% at 85% 30%, #1d2fd6 0%, #000595 60%); }
+    .x-slides { display: flex; height: 100%; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; }
+    .x-slides::-webkit-scrollbar { display: none; }
+    .x-slide { flex: 0 0 100%; scroll-snap-align: start; display: grid; grid-template-columns: 1fr 104px; gap: 10px; padding: 13px 14px 26px 16px; }
+    .x-over { font-size: 9.5px; font-weight: 700; letter-spacing: .6px; text-transform: uppercase; opacity: .75; }
+    .x-name { margin-top: 3px; font-size: 12.5px; font-weight: 600; line-height: 1.25; letter-spacing: -.1px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+    .x-price { margin-top: 4px; display: flex; align-items: baseline; gap: 6px; }
+    .x-price b { font-size: 21px; font-weight: 800; letter-spacing: -.4px; }
+    .x-price small { font-size: 11px; opacity: .8; }
+    .x-price s { font-size: 11px; opacity: .6; }
+    .x-price .ps-off { align-self: center; }
+    .x-media { position: relative; align-self: center; height: 104px; border-radius: 14px; background: #fff; display: grid; place-items: center; box-shadow: 0 0 40px rgba(120, 150, 255, .45); }
+    .x-media img { max-width: 86%; max-height: 90px; mix-blend-mode: multiply; }
+    .x-dots { position: absolute; left: 12px; right: 12px; bottom: 10px; display: flex; gap: 4px; }
+    .x-dots span { flex: 1; height: 4px; border-radius: 2px; background: rgba(255, 255, 255, .35); }
+    .x-dots span.is-on { background: #fff; }
+
+    /* ação dentro do banner: botão branco → stepper branco */
+    .x-slot { margin-top: 8px; height: 34px; }
+    .x-addw { display: inline-flex; align-items: center; gap: 6px; height: 34px; padding: 0 12px 0 14px; border-radius: 999px; background: #fff; color: var(--praso-blue); font-size: 13px; font-weight: 600; }
+    .x-addw:active { transform: scale(.97); }
+    .x-stepw { display: inline-flex; align-items: center; height: 34px; padding: 0 4px; gap: 2px; border-radius: 999px; background: #fff; color: var(--praso-blue); }
+    .x-stepw button { width: 30px; height: 30px; display: grid; place-items: center; }
+    .x-stepw span { min-width: 44px; height: 26px; padding: 0 6px; display: grid; place-items: center; border-radius: 999px; background: var(--praso-blue); color: #fff; font-size: 12.5px; font-weight: 600; }
+
+    /* B2 · combo */
+    .x-combo { display: grid; grid-template-columns: 1fr 124px; gap: 8px; height: 100%; padding: 13px 14px 14px 16px; }
+    .x-combo__disc { display: inline-flex; align-items: center; height: 16px; padding: 0 4px; margin-left: 6px; border-radius: 3px; background: var(--green-600); color: #fff; font-size: 9.5px; font-weight: 700; letter-spacing: 0; text-transform: none; vertical-align: 1px; }
+    .x-combo__media { position: relative; align-self: center; height: 112px; }
+    .x-combo__media .x-media { position: absolute; width: 74px; height: 74px; border-radius: 12px; }
+    .x-combo__media .x-media img { max-height: 62px; }
+    .x-combo__media .x-media:nth-child(1) { left: 0; top: 0; }
+    .x-combo__media .x-media:nth-child(3) { right: 0; bottom: 0; }
+    .x-combo__plus { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); z-index: 2; width: 24px; height: 24px; border-radius: 50%; background: #facc15; color: #000595; display: grid; place-items: center; }
+    .x-done { display: inline-flex; align-items: center; gap: 8px; height: 34px; padding: 0 6px 0 12px; border-radius: 999px; background: #dcfce7; color: #166534; font-size: 12.5px; font-weight: 600; }
+    .x-done button { height: 26px; padding: 0 9px; border-radius: 999px; background: #fff; color: var(--gray-700); font-size: 11.5px; font-weight: 600; }
+
+    /* B5 · relâmpago */
+    .x-hero--flash { background: radial-gradient(120% 140% at 85% 30%, #2a39e6 0%, #000595 62%); }
+    .x-flash { display: flex; align-items: center; gap: 6px; }
+    .x-flash__tag { display: inline-flex; align-items: center; gap: 3px; height: 18px; padding: 0 6px; border-radius: 4px; background: #facc15; color: #000595; font-size: 9.5px; font-weight: 800; letter-spacing: .4px; }
+    .x-timer { display: inline-flex; gap: 2px; font-variant-numeric: tabular-nums; }
+    .x-timer i { font-style: normal; min-width: 21px; height: 18px; padding: 0 3px; display: grid; place-items: center; border-radius: 4px; background: rgba(255, 255, 255, .16); font-size: 11px; font-weight: 700; }
+    .x-timer em { font-style: normal; font-size: 11px; font-weight: 700; opacity: .7; line-height: 18px; }
+    .x-stock { position: absolute; right: 14px; bottom: 11px; width: 104px; }
+    .x-stock__bar { height: 4px; border-radius: 2px; background: rgba(255, 255, 255, .25); overflow: hidden; }
+    .x-stock__bar i { display: block; height: 100%; background: #facc15; }
+    .x-stock span { display: block; margin-bottom: 3px; font-size: 9.5px; font-weight: 600; opacity: .85; text-align: right; }
+
+    /* ---------- toast */
+    .x-toast { position: absolute; left: 16px; right: 16px; bottom: 98px; z-index: 60; display: flex; align-items: center; gap: 10px; padding: 10px 12px 10px 14px; border-radius: 12px; background: #030712; color: #fff; font-size: 12.5px; box-shadow: 0 8px 24px rgba(0, 0, 0, .25); transform: translateY(12px); opacity: 0; pointer-events: none; transition: .2s; }
+    .x-toast.is-on { transform: none; opacity: 1; pointer-events: auto; }
+    .x-toast span { flex: 1; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .x-toast a { flex: none; color: #9ab6ff; font-weight: 600; }
+
+    /* ---------- pop-ups (overlay) */
+    .x-ov { position: absolute; inset: 0; z-index: 50; display: flex; align-items: center; justify-content: center; padding: 16px; background: rgba(3, 7, 18, .55); animation: x-fade .2s ease; }
+    .x-ov--sheet { align-items: flex-end; padding: 0; }
+    @keyframes x-fade { from { opacity: 0; } }
+    @keyframes x-up { from { transform: translateY(30px); opacity: 0; } }
+    .x-pop { position: relative; width: 100%; max-height: 100%; overflow: hidden; border-radius: 20px; background: #fff; animation: x-up .25s ease; display: flex; flex-direction: column; }
+    .x-ov--sheet .x-pop { border-radius: 20px 20px 0 0; max-height: 92%; padding-bottom: 22px; }
+    .x-pop__x { position: absolute; top: 10px; right: 10px; z-index: 3; width: 32px; height: 32px; border-radius: 50%; display: grid; place-items: center; background: rgba(255, 255, 255, .18); color: #fff; }
+    .x-pop__head { padding: 18px 18px 16px; color: #fff; background: radial-gradient(120% 160% at 90% 0%, #1d2fd6 0%, #000595 65%); }
+    .x-pop__head .x-over { opacity: .8; }
+    .x-pop__head h2 { margin-top: 4px; font-size: 19px; font-weight: 800; letter-spacing: -.3px; line-height: 1.2; }
+    .x-pop__head p { margin-top: 4px; font-size: 12.5px; opacity: .85; line-height: 1.35; }
+    .x-pop__body { overflow-y: auto; scrollbar-width: none; }
+    .x-pop .ps-rail { padding-top: 16px; padding-bottom: 4px; }
+    .x-pop__foot { padding: 12px 16px 16px; border-top: 1px solid var(--gray-200); }
+    .x-pop__sum { margin-bottom: 10px; font-size: 12.5px; color: var(--gray-500); text-align: center; }
+    .x-pop__sum b { color: var(--text); }
+    .x-pop__link { display: block; margin-top: 10px; text-align: center; font-size: 13px; color: var(--praso-blue); font-weight: 500; }
+    .x-grab { width: 36px; height: 5px; margin: 8px auto 0; border-radius: 3px; background: var(--gray-300); }
+
+    /* indicação */
+    .x-ind__head { margin: 10px 16px 0; padding: 18px 16px; border-radius: 16px; color: #fff; background: radial-gradient(120% 160% at 90% 0%, #1d2fd6 0%, #0b1150 70%); }
+    .x-ind__head h2 { font-size: 20px; font-weight: 800; letter-spacing: -.3px; line-height: 1.15; }
+    .x-ind__head h2 em { font-style: normal; color: #facc15; }
+    .x-ind__head p { margin-top: 6px; font-size: 12.5px; opacity: .85; line-height: 1.35; }
+    .x-rules { margin: 16px 16px 0; }
+    .x-rules h3 { font-size: 14.5px; font-weight: 600; letter-spacing: -.2px; margin-bottom: 10px; }
+    .x-rules ol { margin: 0; padding: 0; list-style: none; counter-reset: r; display: grid; gap: 10px; }
+    .x-rules li { counter-increment: r; display: grid; grid-template-columns: 22px 1fr; gap: 10px; font-size: 12.5px; line-height: 1.4; color: var(--gray-700); }
+    .x-rules li::before { content: counter(r); width: 22px; height: 22px; border-radius: 50%; background: var(--praso-blue-50); color: var(--praso-blue); font-size: 11px; font-weight: 700; display: grid; place-items: center; }
+    .x-rules li b { color: var(--text); font-weight: 600; }
+    .x-ind__actions { padding: 18px 16px 0; display: grid; gap: 8px; }
+    .x-link { display: flex; align-items: center; gap: 8px; height: 40px; padding: 0 6px 0 12px; border: 1px dashed #b9c9f3; border-radius: 10px; background: #f7f9ff; font-size: 12.5px; color: var(--gray-700); }
+    .x-link span { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .x-link button { height: 28px; padding: 0 10px; border-radius: 8px; background: #fff; border: 1px solid var(--gray-200); color: var(--praso-blue); font-size: 12px; font-weight: 600; }
+    .x-note { margin: 8px 16px 0; font-size: 11px; color: var(--gray-400); text-align: center; }
+
+    /* share sheet (simulação da folha nativa) */
+    .x-share { position: absolute; inset: 0; z-index: 65; display: flex; align-items: flex-end; background: rgba(3, 7, 18, .35); animation: x-fade .15s ease; }
+    .x-share__box { width: 100%; padding: 8px 16px 30px; border-radius: 20px 20px 0 0; background: #f2f2f7; animation: x-up .2s ease; }
+    .x-share__prev { display: flex; align-items: center; gap: 10px; margin: 10px 0 14px; padding: 10px; border-radius: 12px; background: #fff; }
+    .x-share__prev i { width: 40px; height: 40px; flex: none; border-radius: 10px; background: var(--praso-blue); display: grid; place-items: center; color: #fff; font-style: normal; font-weight: 800; font-size: 18px; }
+    .x-share__prev b { display: block; font-size: 13px; }
+    .x-share__prev span { font-size: 11.5px; color: var(--gray-500); }
+    .x-share__apps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; text-align: center; font-size: 11px; color: var(--gray-700); }
+    .x-share__apps button { display: grid; justify-items: center; gap: 6px; }
+    .x-share__apps i { width: 56px; height: 56px; border-radius: 14px; display: grid; place-items: center; color: #fff; }
+    .x-share__cancel { margin-top: 16px; width: 100%; height: 48px; border-radius: 12px; background: #fff; color: var(--praso-blue); font-size: 15px; font-weight: 600; }
+
+    /* página de indicação (destino do "Ver mais") */
+    .x-indpage .ps-banner { margin: 8px 16px 0; }
+    .x-empty { margin: 20px 16px 0; padding: 16px; border: 1px solid var(--gray-200); border-radius: 14px; font-size: 12.5px; color: var(--gray-500); text-align: center; }
+    .x-empty b { display: block; margin-bottom: 4px; color: var(--text); font-size: 13.5px; }
+  </style>
+</head>
+<body>
+  <div id="app"></div>
+
+  <script src="../../ds/data/catalog.js"></script>
+  <script src="../../ds/praso.js"></script>
+  <script src="../../ds/screens.js"></script>
+  <script>
+    const { ui, icon, esc } = Praso;
+    const brl = Praso.fmt.brl;
+    const qs = new URLSearchParams(location.search);
+    const CASES = { b1: 'B1 Banner +', b2: 'B2 Combo', b5: 'B5 Relâmpago', p1: 'P1 Vitrine', indica: 'Indicação' };
+    const caso = Object.keys(CASES).includes(qs.get('caso')) ? qs.get('caso') : 'b1';
+    const isPopup = caso === 'p1' || caso === 'indica';
+
+    /* ===================== ação branca dentro do banner (botão → stepper) */
+    const wAction = (id) => {
+      const p = Praso.product(id); const q = Praso.cart.qty(id);
+      if (!q) return `<button class="x-addw" data-action="add" data-id="${id}">Adicionar ${icon('plus', { size: 16, sw: 2.4 })}</button>`;
+      return `<div class="x-stepw"><button data-action="dec" data-id="${id}" aria-label="Diminuir">${icon(q > 1 ? 'minus' : 'trash', { size: 17, sw: 2 })}</button>
+        <span>${q}${Praso.sellUnit(p)}</span><button data-action="add" data-id="${id}" aria-label="Aumentar">${icon('plus', { size: 18, sw: 2.2 })}</button></div>`;
+    };
+    const slot = (id) => `<div class="x-slot" data-wslot="${id}">${wAction(id)}</div>`;
+    const media = (p) => `<div class="x-media"><img src="${Praso.productImg(p)}" alt=""></div>`;
+    const priceLine = (p) => `<div class="x-price"><b>${brl(p.price)}</b><small>/${p.per}</small>${p.off ? ui.offBadge(p.off) : ''}</div>`;
+
+    /* ===================== B1 · banner com produto e "+" (carrossel de 3) */
+    const B1_IDS = ['chanty-amelia', 'oleo-st-isabel', 'shoyu-cepera'];
+    const heroB1 = () => `<div class="x-hero"><div class="x-slides" data-r="slides">${Praso.products(B1_IDS).map((p) => `
+        <div class="x-slide">
+          <div><div class="x-over">Oferta da semana</div><div class="x-name">${esc(p.name)}</div>${priceLine(p)}${slot(p.id)}</div>
+          ${media(p)}
+        </div>`).join('')}</div>
+      <div class="x-dots">${B1_IDS.map((_, i) => `<span class="${i ? '' : 'is-on'}"></span>`).join('')}</div></div>`;
+
+    /* ===================== B2 · combo com "adicionar tudo" */
+    const combo = { name: 'Gordura Fry Elogiata + Farinha Panko', ids: ['gordura-elogiata', 'farinha-panko'], total: 178.78, disc: 28.50 };
+    const comboIn = () => combo.ids.every((id) => Praso.cart.qty(id) > 0);
+    const comboAction = () => comboIn()
+      ? `<div class="x-done">✓ No carrinho <button data-action="combo-undo">Desfazer</button></div>`
+      : `<button class="x-addw" data-action="combo-add">Adicionar combo ${icon('plus', { size: 16, sw: 2.4 })}</button>`;
+    const heroB2 = () => `<div class="x-hero"><div class="x-combo">
+        <div>
+          <div class="x-over">Combo promocional <span class="x-combo__disc">${brl(combo.disc)} OFF</span></div>
+          <div class="x-name">${esc(combo.name)}</div>
+          <div class="x-price"><b>${brl(combo.total)}</b><small>2 produtos</small></div>
+          <div class="x-slot" data-r="combo">${comboAction()}</div>
+        </div>
+        <div class="x-combo__media">${media(Praso.product('gordura-elogiata'))}<span class="x-combo__plus">${icon('plus', { size: 14, sw: 3 })}</span>${media(Praso.product('farinha-panko'))}</div>
+      </div></div>`;
+
+    /* ===================== B5 · oferta relâmpago com contagem regressiva */
+    const ENDS = Date.now() + ((2 * 60 + 14) * 60 + 37) * 1000;
+    const timer = () => {
+      const s = Math.max(0, Math.floor((ENDS - Date.now()) / 1000));
+      const pad = (n) => String(n).padStart(2, '0');
+      return `<i>${pad(Math.floor(s / 3600))}</i><em>:</em><i>${pad(Math.floor(s / 60) % 60)}</i><em>:</em><i>${pad(s % 60)}</i>`;
+    };
+    const heroB5 = () => {
+      const p = Praso.product('kitkat');
+      return `<div class="x-hero x-hero--flash"><div class="x-slide" style="height:100%">
+          <div>
+            <div class="x-flash"><span class="x-flash__tag">⚡ RELÂMPAGO</span><span class="x-timer" data-r="timer">${timer()}</span></div>
+            <div class="x-name" style="margin-top:6px">${esc(p.name)}</div>${priceLine(p)}${slot(p.id)}
+          </div>
+          <div style="align-self:start">${media(p)}</div>
+        </div>
+        <div class="x-stock"><span>68% vendido</span><div class="x-stock__bar"><i style="width:68%"></i></div></div></div>`;
+    };
+
+    /* ===================== Início: igual ao app, trocando só o banner */
+    const inicio = () => {
+      const base = Praso.screens.inicio();
+      const hero = { b1: heroB1, b2: heroB2, b5: heroB5 }[caso];
+      if (hero) base.body = base.body.replace(ui.heroCarousel(), hero());
+      base.onMount = (root) => {
+        const sl = root.querySelector('[data-r="slides"]');
+        if (sl) sl.addEventListener('scroll', () => {
+          const i = Math.round(sl.scrollLeft / sl.clientWidth);
+          root.querySelectorAll('.x-dots span').forEach((d, j) => d.classList.toggle('is-on', i === j));
+        });
+      };
+      return base;
+    };
+
+    /* ===================== P1 · pop-up mini vitrine */
+    const P1_IDS = ['cobertura-harald', 'recheio-harald', 'melken-granule', 'nutella', 'kitkat'];
+    const p1Sum = () => {
+      const added = P1_IDS.filter((id) => Praso.cart.qty(id));
+      if (!added.length) return '<div class="x-pop__sum">Adicione direto daqui, sem sair da tela.</div>';
+      const tot = added.reduce((s, id) => s + Praso.lineUnitPrice(Praso.product(id)) * Praso.cart.qty(id), 0);
+      return `<div class="x-pop__sum"><b>${added.length} ${added.length === 1 ? 'item adicionado' : 'itens adicionados'}</b> · ${brl(tot)}</div>`;
+    };
+    const popP1 = () => `<div class="x-ov" data-r="ov"><div class="x-pop">
+        <button class="x-pop__x" data-action="close-pop" aria-label="Fechar">${icon('close', { size: 18, sw: 2.2 })}</button>
+        <div class="x-pop__head"><div class="x-over">Só hoje</div><h2>Quarta dos Doces 🍫</h2><p>Coberturas e recheios com desconto. Adicione ao carrinho por aqui mesmo.</p></div>
+        <div class="x-pop__body">${ui.productRail(P1_IDS, { size: 'sm' })}</div>
+        <div class="x-pop__foot"><div data-r="p1sum">${p1Sum()}</div>
+          <button class="ps-btn ps-btn--secondary ps-btn--block" data-action="close-pop" data-r="p1cta">Agora não</button>
+          <a class="x-pop__link" href="#/explorar" data-action="close-go" data-go="#/explorar">Ver todas as ofertas da Quarta dos Doces</a></div>
+      </div></div>`;
+
+    /* ===================== Indicação · pop-up com compartilhar direto */
+    const LINK = 'praso.com.br/indique/clecio-muniz';
+    const RULES = `<ol>
+        <li><span>Você ganha <b>R$100 em crédito</b> na carteira Praso por indicação válida e <b>mais R$150 a cada 3</b>, sem limite.</span></li>
+        <li><span>Indique negócios de <b>alimentação com CNPJ</b> que ainda não têm conta na Praso.</span></li>
+        <li><span>A indicação vale quando o <b>1º pedido do indicado tem R$100 ou mais</b> e é entregue e pago.</span></li>
+        <li><span>Seu link vale por 30 dias. O crédito cai em poucas horas e não expira.</span></li>
+      </ol>`;
+    const popIndica = () => `<div class="x-ov x-ov--sheet" data-r="ov"><div class="x-pop">
+        <div class="x-grab"></div>
+        <button class="x-pop__x" style="background:var(--bg-subtle);color:var(--gray-500)" data-action="close-pop" aria-label="Fechar">${icon('close', { size: 18, sw: 2.2 })}</button>
+        <div class="x-pop__body">
+          <div class="x-ind__head"><div class="x-over">Indique e Ganhe</div><h2>Ganhe <em>R$100</em> por amigo que fizer o 1º pedido</h2><p>Mande seu link agora para quem tem restaurante, lanchonete ou outro negócio de alimentação.</p></div>
+          <div class="x-rules"><h3>Como funciona</h3>${RULES}</div>
+          <div class="x-ind__actions">
+            <div class="x-link"><span>${LINK}</span><button data-action="copy">Copiar</button></div>
+            <button class="ps-btn ps-btn--primary ps-btn--block ps-btn--lg" data-action="share">Indicar agora ${icon('arrow-right', { size: 18, sw: 2.2 })}</button>
+            <a class="ps-btn ps-btn--secondary ps-btn--block" href="#/indique" data-action="close-go" data-go="#/indique">Ver mais</a>
+          </div>
+        </div>
+      </div></div>`;
+
+    const shareSheet = () => `<div class="x-share" data-r="share" data-action="share-bg"><div class="x-share__box">
+        <div class="x-grab" style="margin-top:0"></div>
+        <div class="x-share__prev"><i>p</i><div><b>Faça seu 1º pedido na Praso</b><span>${LINK}</span></div></div>
+        <div class="x-share__apps">
+          <button data-action="share-pick" data-label="WhatsApp"><i style="background:#25d366">${icon('chat', { size: 28, sw: 1.8 })}</i>WhatsApp</button>
+          <button data-action="share-pick" data-label="Mensagens"><i style="background:#34c759">${icon('chat', { size: 28, sw: 1.8 })}</i>Mensagens</button>
+          <button data-action="copy"><i style="background:#8e8e93">${icon('doc', { size: 26, sw: 1.8 })}</i>Copiar link</button>
+          <button data-action="share-pick" data-label="Mais opções"><i style="background:#c7c7cc;color:#030712;font-style:normal;font-weight:700;font-size:20px">•••</i>Mais</button>
+        </div>
+        <button class="x-share__cancel" data-action="share-close">Cancelar</button>
+      </div></div>`;
+
+    /* destino do "Ver mais": página de Indicações (simplificada) */
+    const indique = () => ({
+      tab: 'conta',
+      header: ui.navHeader({ title: 'Indique e Ganhe', back: true }),
+      body: `<div class="x-indpage">
+          ${ui.banner({ img: 'indica-praso.png', alt: 'Indica Praso' })}
+          <div class="x-rules"><h3>Regras do programa</h3>${RULES}</div>
+          <div class="x-ind__actions">
+            <div class="x-link"><span>${LINK}</span><button data-action="copy">Copiar</button></div>
+            <button class="ps-btn ps-btn--primary ps-btn--block ps-btn--lg" data-action="share">Indicar agora ${icon('arrow-right', { size: 18, sw: 2.2 })}</button>
+          </div>
+          <div class="x-empty"><b>Suas indicações</b>Quando alguém se cadastrar pelo seu link, aparece aqui com o status.</div>
+          <p class="x-note">Página ilustrativa: no app, é a tela de Indicações atual.</p>
+        </div><div class="ps-bottom-space"></div>`,
+    });
+
+    /* ===================== toast */
+    let toastT;
+    const toast = (msg, link = true) => {
+      const t = document.querySelector('.x-toast');
+      t.innerHTML = `<span>${msg}</span>${link ? '<a href="#/carrinho" data-action="close-go" data-go="#/carrinho">Ver carrinho</a>' : ''}`;
+      t.classList.add('is-on'); clearTimeout(toastT); toastT = setTimeout(() => t.classList.remove('is-on'), 2600);
+    };
+
+    /* ===================== app */
+    const root = () => document.getElementById('app');
+    const openPop = () => {
+      if (!isPopup || root().querySelector('[data-r="ov"]')) return;
+      if (location.hash && !/inicio/.test(location.hash)) location.hash = '#/inicio';
+      root().insertAdjacentHTML('beforeend', caso === 'p1' ? popP1() : popIndica());
+    };
+    const closePop = () => root().querySelectorAll('[data-r="ov"],[data-r="share"]').forEach((n) => n.remove());
+
+    Praso.app({
+      initial: 'inicio',
+      screens: { inicio, indique },
+      actions: {
+        'combo-add': () => { combo.ids.forEach((id) => { if (!Praso.cart.qty(id)) Praso.cart.add(id); }); toast('Combo adicionado · 2 produtos'); },
+        'combo-undo': () => { combo.ids.forEach((id) => Praso.cart.set(id, 0)); },
+        'close-pop': () => closePop(),
+        'close-go': (b) => { closePop(); location.hash = b.dataset.go; },
+        share: () => { root().insertAdjacentHTML('beforeend', shareSheet()); },
+        'share-bg': (b, e) => { if (e.target === b) b.remove(); },
+        'share-close': () => root().querySelector('[data-r="share"]')?.remove(),
+        'share-pick': (b) => { root().querySelector('[data-r="share"]')?.remove(); toast(`Abrindo ${b.dataset.label}… (no app, abre a folha nativa)`, false); },
+        copy: () => { root().querySelector('[data-r="share"]')?.remove(); try { navigator.clipboard.writeText('https://' + LINK); } catch (e) {} toast('Link copiado', false); },
+        'reopen': () => { closePop(); openPop(); },
+      },
+    });
+
+    /* seletor de caso + toast */
+    root().insertAdjacentHTML('beforeend', `<div class="x-arms">${Object.entries(CASES).map(([k, v]) =>
+      `<a href="?caso=${k}" class="${k === caso ? 'is-on' : ''}">${v}</a>`).join('')}${isPopup ? `<button data-action="reopen" title="Mostrar de novo">↻</button>` : ''}</div><div class="x-toast"></div>`);
+
+    /* atualiza as ações do banner/pop-up quando o carrinho muda */
+    Praso.cart.on((id) => {
+      root().querySelectorAll('[data-wslot]').forEach((s) => { s.innerHTML = wAction(s.dataset.wslot); });
+      const c = root().querySelector('[data-r="combo"]'); if (c) c.innerHTML = comboAction();
+      const sum = root().querySelector('[data-r="p1sum"]'); if (sum) sum.innerHTML = p1Sum();
+      const cta = root().querySelector('[data-r="p1cta"]'); if (cta && P1_IDS.some((i) => Praso.cart.qty(i))) { cta.textContent = 'Continuar comprando'; cta.classList.replace('ps-btn--secondary', 'ps-btn--primary'); }
+    });
+    /* toast ao adicionar pelo banner (B1/B5) */
+    root().addEventListener('click', (e) => {
+      const b = e.target.closest('[data-wslot] [data-action="add"]');
+      if (b && Praso.cart.qty(b.dataset.id) === 1) toast(`${esc(Praso.product(b.dataset.id).name)} adicionado`);
+    });
+
+    if (caso === 'b5') setInterval(() => { const t = root().querySelector('[data-r="timer"]'); if (t) t.innerHTML = timer(); }, 1000);
+    if (isPopup) setTimeout(openPop, 600);
+  </script>
+</body>
+</html>
